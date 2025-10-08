@@ -66,3 +66,11 @@ pre.code {
 .links li { margin: 10px 0; }
 
 .footer { padding: 28px 20px; text-align:center; color: var(--muted); border-top: 1px solid #101823; }
+
+.hero {
+  /* existing styles... */
+  background-image: url('assets/hero-banner.png'); /* <- your file */
+  background-size: cover;
+  background-position: center;
+}
+
