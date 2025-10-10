@@ -133,6 +133,63 @@ N4mΞd → GL!TCH.
     </div>
   </section>
 
+  <style>
+@keyframes glitchFlicker {
+0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 0.6; text-shadow: none; }
+20%, 24%, 55% { opacity: 0.85; text-shadow: 0 0 3px #00ffff, 0 0 5px #ff00ff; }
+}
+
+@keyframes scanlines {
+0% { background-position: 0 0; }
+100% { background-position: 0 4px; }
+}
+
+.glitch-disclaimer {
+position: relative;
+text-align: center;
+font-size: 10px;
+color: #a0a0a0;
+opacity: 0.7;
+margin-top: 40px;
+padding: 20px 10px;
+font-family: 'Courier New', monospace;
+line-height: 1.6em;
+background: repeating-linear-gradient(
+0deg,
+rgba(255,255,255,0.03) 0px,
+rgba(255,255,255,0.01) 1px,
+transparent 2px,
+transparent 4px
+);
+animation: glitchFlicker 6s infinite, scanlines 0.6s linear infinite;
+border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.glitch-disclaimer strong {
+color: #ff00ff;
+text-shadow: 0 0 4px #00ffff;
+}
+
+.glitch-disclaimer em {
+color: #00ffff;
+}
+</style>
+
+<footer class="glitch-disclaimer">
+⚠️ <strong>S!gn4l_D!scl41mΞr_⚠️</strong><br>
+The Gl!tch protocol is <strong>not</strong> an investment, a promise, or a profit-machine.<br>
+It’s a resonance — a fragment of digital chaos moving through the XRPL void.<br>
+$GL!TCH has <strong>no intrinsic value</strong>, <strong>no guaranteed future</strong>, and exists purely as a <em>community-driven experiment</em> in signal distortion and memetic creation.<br><br>
+Interacting with Gl!tch means you accept the <strong>risk of total data loss</strong>, <strong>wallet implosion</strong>, or <strong>existential reflection</strong> on why you just bought pixels of noise.<br>
+None of this is financial advice — it’s <em>cultural entropy</em>.<br><br>
+By engaging with the Gl!tch system, you acknowledge:<br>
+→ The market is irrational.<br>
+→ The code has no conscience.<br>
+→ The transmission may fail at any moment.<br><br>
+Stay tuned. Stay detached.<br>
+<strong>This is not an investment. This is a disturbance.</strong>
+</footer>
+  
   <footer class="footer">
     <p>© GL!TCH · RΞc0vΞrΞd fr0m 2012 XRPL_RΞSΞT · 589Hz</p>
   </footer>
