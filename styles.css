@@ -98,3 +98,15 @@ pre.code { background: #0a0f15; color: #e6f1ff; border: 1px solid #132031; borde
   box-shadow: 0 0 12px rgba(37,228,255,0.18); }
 .cipher.show-tooltip .tooltip { opacity: 0.9; animation: tipflicker 1.2s ease; }
 @keyframes tipflicker { 0% { opacity: 0; } 20% { opacity: 0.9; } 60% { opacity: 0.6; } 100% { opacity: 0.9; } }
+
+/* GL!TCH: subtle compression ghost */
+:root { --glitch-cyan: #7ee5ff; --glitch-violet: #9a7eff; }
+body::after {
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:1;
+  background:
+    radial-gradient(120% 120% at 15% 20%, rgba(126,229,255,.05), transparent 60%),
+    radial-gradient(120% 120% at 85% 70%, rgba(154,126,255,.05), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 2px, transparent 2px 4px);
+  mix-blend-mode: overlay; opacity:.45;
+}
+
