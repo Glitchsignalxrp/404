@@ -17,6 +17,21 @@
   <meta name="twitter:image" content="assets/og-image.png">
   <link rel="icon" href="assets/favicon.png">
   <link rel="stylesheet" href="styles.css">
+  <!-- GL!TCH: S!GN4L ARCH!VE v1 -->
+<meta name="glitch-trace" content="trace_404://found; seed_commit=d_s_a02f9c; checksum=178409; delta=12.48">
+<script>
+  // Subtle console trail for investigators
+  (function () {
+    const msg = [
+      "%cΣystΞm_RΞm4nt_Aw4kΞns",
+      "trace: explore404 → sysroot/devnote.txt → .well-known/glitchmanifest.json",
+      "seed_commit=d_schwartz_a02f9c | checksum=178409 | delta=12.48"
+    ];
+    console.log("%cGL!TCH//TRACE", "color:#00e5ff;font-weight:bold");
+    msg.forEach(line => console.log(line));
+  })();
+</script>
+
 </head>
 <body>
   <header class="nav">
@@ -205,5 +220,49 @@ Stay tuned. Stay detached.<br>
     });
   });
   </script>
+  <section id="explore404" class="glitch-zone">
+  <a href="#" class="explore-link" aria-label="Explore404">explore404</a>
+  <!-- Intentionally appears non-functional. Investigators will inspect… -->
+</section>
+
+<!-- Invisible hotspot (1px) that actually links to the ARG page -->
+<a id="hotspot404" href="/explore404/" aria-hidden="true" tabindex="-1"></a>
+
+<style>
+  .glitch-zone { position: relative; display:inline-block; }
+  .explore-link { color:#7ee5ff; text-decoration:none; letter-spacing:0.08em; }
+  .explore-link:hover { text-shadow:0 0 6px #7ee5ff; }
+
+  /* Invisible, but clickable hotspot near the "explore404" word */
+  #hotspot404 {
+    position:absolute; width:1px; height:1px;
+    left:-9999px; top:-9999px; /* default off-canvas */
+  }
+  /* Snap the hotspot near the explore404 text once DOM is ready */
+</style>
+<script>
+  // Reposition hotspot to sit “on” the explore404 word without altering layout
+  (function () {
+    const link = document.querySelector('#explore404 .explore-link');
+    const spot = document.getElementById('hotspot404');
+    if (!link || !spot) return;
+    const r = link.getBoundingClientRect();
+    // place a 1px target at the left edge of the word—sleuths will find it
+    const x = window.scrollX + r.left + 4; // a few px inside the text box
+    const y = window.scrollY + r.top + r.height/2;
+    spot.style.left = x + "px";
+    spot.style.top  = y + "px";
+  })();
+</script>
+
+<!--
+BEGIN_TRANSMISSION[404]:
+01000111 01001100 00100001 01010100 01000011 01001000 00101110
+01110010 01101001 01110000 01110000 01101100 01100101 00101110
+01101111 01110010 01100111 00101111 01100110 01101111 01110101
+01101110 01100100 01100001 01110100 01101001 01101111 01101110
+END_TRANSMISSION
+-->
+
 </body>
 </html>
