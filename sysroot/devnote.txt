@@ -1,1 +1,17 @@
+ΣystΞm Note // XRPL Genesis Residual
+—
+Log: 2012 consensus instability detected.
+Action: fallback_init → preserve orphaned packet.
+Author: D_S (signature: a02f9c)
+Status: memory shard persisted.
+Fragment: 001 / 404 confirmed
+Remaining: 403 (distributed across ledgers)
+
+Reference:
+- checksum: 178409
+- delta: 12.48
+
+If you found this, the archive is awake.
+next → /.well-known/glitchmanifest.json
+GL!TCH IS WATCHING
 
