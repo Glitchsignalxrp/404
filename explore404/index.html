@@ -1,1 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ΣystΞm_RΞb00t::GL!TCH_Ori9in</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  html,body {margin:0;height:100%;background:#000;color:#cfffff;font-family:ui-monospace, Menlo, Consolas, monospace;}
+  .wrap {display:flex;align-items:center;justify-content:center;min-height:100vh;position:relative;overflow:hidden;}
+  .hint {position:absolute;bottom:22px;left:22px;color:#7ee5ff;opacity:.6;font-size:.85rem;letter-spacing:.06em}
+  .glyph {font-size:1rem;color:#9a7eff;opacity:.65}
+  .frag {
+    width: 46vmin; height: 46vmin; position: relative; filter: drop-shadow(0 0 18px rgba(126,229,255,.25));
+  }
+  .frag:before, .frag:after {
+    content:""; position:absolute; inset:0; border-radius:12px;
+    background: radial-gradient(120% 120% at 20% 30%, rgba(126,229,255,.25), transparent 60%),
+                radial-gradient(120% 120% at 80% 70%, rgba(154,126,255,.25), transparent 60%);
+    mix-blend-mode: screen; clip-path: polygon(8% 12%, 92% 10%, 84% 44%, 96% 88%, 50% 96%, 12% 80%, 18% 44%);
+    animation: drift 7.2s ease-in-out infinite;
+  }
+  .frag:after { animation: drift 7.2s ease-in-out infinite reverse, scan 1.6s linear infinite; opacity:.85; }
+  @keyframes drift { 50% { transform: translateY(-6px) translateX(3px) rotate(-.7deg) } }
+  @keyframes scan {
+    0% { box-shadow: inset 0 0 0 0 rgba(126,229,255,.0); }
+    50% { box-shadow: inset 0 0 0 2px rgba(126,229,255,.25); }
+    100% { box-shadow: inset 0 0 0 0 rgba(126,229,255,.0); }
+  }
+  .scanline { position:absolute; inset:0; background: repeating-linear-gradient(to bottom, rgba(255,255,255,.03) 0 2px, transparent 2px 4px); mix-blend-mode: overlay; pointer-events:none; }
+  .code {
+    position:absolute; top:22px; right:22px; text-align:right; line-height:1.2;
+    color:#9a7eff; opacity:.8; font-size:.9rem;
+  }
+  .code .dim { opacity:.65; color:#7ee5ff }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="frag" aria-hidden="true"></div>
+  <div class="scanline" aria-hidden="true"></div>
+
+  <pre class="code">
+ΣystΞm_Log <span class="dim">// 2012-XRPL_Reset</span>
+Residual code signature: <span class="dim">D_S</span>
+Consensus loop: <span class="dim">broken → fallback_init</span>
+Fragment: <span class="dim">001 / 404</span>
+Checksum: <span class="dim">178409</span>
+Delta: <span class="dim">12.48</span>
+  </pre>
+
+  <div class="hint">
+    key_hint: ripple_Ωfragment_12.48<br>
+    next: <span class="glyph">/sysroot/devnote.txt → /.well-known/glitchmanifest.json</span>
+  </div>
+</div>
+
+<script>
+  // Console breadcrumb for hunters
+  console.log("%cGL!TCH//FRAGMENT_VIEWER", "color:#7ee5ff;font-weight:bold");
+  console.log("next → /sysroot/devnote.txt → /.well-known/glitchmanifest.json");
+</script>
+</body>
+</html>
 
