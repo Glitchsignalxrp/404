@@ -109,6 +109,17 @@ N4mΞd → GL!TCH.
       </p>
     </div>
   </section>
+  
+<section class="glitch-banner">
+  <div class="glitch-overlay"><span class="logo">$GL!TCH</span></div>
+</section>
+  
+<audio id="glitch-static" src="/assets/audio/static-loop.mp3" autoplay loop muted></audio>
+<script>
+  const hum = document.getElementById('glitch-static');
+  // Unmute on first user interaction if you want audible ambience:
+  window.addEventListener('pointerdown', ()=>{ hum.muted=false; hum.volume=0.05 }, {once:true});
+</script>
 
   <section id="token" class="panel two-col">
     <div>
@@ -263,6 +274,9 @@ BEGIN_TRANSMISSION[404]:
 01101110 01100100 01100001 01110100 01101001 01101111 01101110
 END_TRANSMISSION
 -->
+  
+<link rel="stylesheet" href="/assets/animations/glitch_pulse/glitch.css">
+<script src="/assets/animations/glitch_pulse/glitch.js"></script>
 
 </body>
 </html>
