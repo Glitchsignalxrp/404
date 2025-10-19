@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GL!TCH — Coding Hero Animation</title>
+<style>
+  :root{
+    --bg:#08090d;
+    --void1:#06070a;
+    --void2:#0e0f17;
+    --cyan:#1cc8ff;
+    --cyan-soft:#0caad9;
+    --magenta:#ff2e9a;
+    --magenta-soft:#cc1f79;
+    --white:#e6eef6;
+  }
+  html,body{height:100%;margin:0;background:radial-gradient(120% 140% at 70% 30%, #10131f 0%, var(--void2) 45%, var(--void1) 100%); overflow:hidden; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;}
+  .stage{ position:relative; width:100%; height:100vh; min-height:420px; aspect-ratio:3/1; display:grid; place-items:center; isolation:isolate;}
+
+  .grain{ position:absolute; inset:0; background-image:url('data:image/svg+xml;utf8,\
+      <svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140">\
+        <rect width="100%" height="100%" fill="black"/>\
+        <filter id="n"><feTurbulence baseFrequency="0.85" numOctaves="2" seed="7" type="fractalNoise"/></filter>\
+        <rect width="100%" height="100%" filter="url(%23n)" opacity="0.08"/></svg>'); mix-blend-mode:screen; opacity:.35; pointer-events:none; animation:grainMove 8s linear infinite;}
+  @keyframes grainMove { from{transform:translate(0,0)} 50%{transform:translate(-2%, 1%)} to{transform:translate(0,0)} }
+
+  .scanlines{ position:absolute; inset:0; pointer-events:none; opacity:.15; background-image: repeating-linear-gradient( to bottom, rgba(255,255,255,.07) 0px, rgba(255,255,255,.07) 1px, transparent 2px, transparent 4px ); mix-blend-mode:overlay; animation:scan 6s linear infinite;}
+  @keyframes scan{ 0%{background-position:0 0} 100%{background-position:0 200px} }
+
+  .glitch-fx{ position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen; filter: contrast(105%) saturate(110%); animation:jit 4.5s steps(1,end) infinite;}
+  @keyframes jit { 0%, 92%, 100% { filter: contrast(105%) saturate(110%) } 93% { filter: contrast(130%) saturate(140%) hue-rotate(8deg) } 96% { filter: contrast(160%) saturate(160%) brightness(1.12) } }
+
+  .desk{ position:absolute; bottom:0; left:0; right:0; height:42%; background: linear-gradient( to top, rgba(4,6,10,.95), rgba(4,6,10,.0) 70% ); }
+  .grid{ position:absolute; inset:auto 0 0 0; height:46%; background-image:
+      radial-gradient(circle at 50% -10%, rgba(28,200,255,.12), transparent 55%), linear-gradient(rgba(12,170,217,.1), rgba(12,170,217,.05));
+    mask-image: linear-gradient(to top, #000 55%, transparent 100%);}
+
+  .rig{ position:relative; width:min(95vw, 1300px); height:min(31vw, 430px); display:grid; grid-template-columns: 1.35fr 1fr; gap:min(4vw, 48px); align-items:end; }
+  .pc{ position:relative; height:86%; display:flex; align-items:center; }
+  .monitor{ width:100%; height:100%; border-radius:18px; box-shadow: 0 0 0 2px rgba(28,200,255,.35), 0 0 42px rgba(28,200,255,.2) inset, 0 0 120px rgba(255,46,154,.06) inset; background: radial-gradient(80% 120% at 30% 20%, #121623 0%, #0a0d15 60%, #06080d 100%); position:relative; overflow:hidden;}
+  .bezel{ position:absolute; inset:-12px; border-radius:22px; border:3px solid rgba(28,200,255,.25); box-shadow: 0 0 0 1px rgba(255,46,154,.18) inset; pointer-events:none; }
+  .codeRain{ position:absolute; inset:8% 6% 14% 6%; overflow:hidden; filter: drop-shadow(0 0 10px rgba(28,200,255,.25)); }
+  .stream{ position:absolute; top:-120%; width:1.2ch; color:var(--cyan); opacity:.9; text-shadow: 0 0 6px rgba(28,200,255,.8), 0 0 18px rgba(255,46,154,.35); white-space:pre; font-weight:600; letter-spacing:.5px; }
+  .stream.alt{ color:var(--magenta-soft); opacity:.85; text-shadow: 0 0 6px rgba(255,46,154,.8), 0 0 18px rgba(28,200,255,.35); }
+  .scanMask{ position:absolute; inset:8% 6% 14% 6%; background: repeating-linear-gradient(to bottom, rgba(255,255,255,.06) 0 2px, transparent 2px 4px); mix-blend-mode:overlay; opacity:.25; pointer-events:none; }
+  .keyboard{ position:absolute; left:8%; right:26%; bottom:6%; height:12%; border-radius:10px; background: linear-gradient(#0c0f16, #0a0d13); box-shadow: 0 0 0 2px rgba(28,200,255,.28) inset, 0 0 22px rgba(28,200,255,.28); }
+  .keys{ position:absolute; inset:10% 4% 14% 4%; display:grid; grid-template-columns: repeat(14,1fr); gap:4px; }
+  .key{ background:#0b1118; border-radius:4px; box-shadow: 0 0 8px rgba(28,200,255,.18) inset; }
+  .keyGlow{ position:absolute; inset:0; border-radius:inherit; background: radial-gradient(circle at 50% 120%, rgba(28,200,255,.48), transparent 55%); opacity:.0; animation:keyPulse 1.8s ease-in-out infinite; }
+  @keyframes keyPulse{ 0%, 50%, 100%{opacity:.04} 25%, 75%{opacity:.18} }
+  .hands{ position:absolute; bottom:6.5%; left:10%; right:32%; height:18%; display:flex; gap:28%; }
+  .hand{ width:22%; height:100%; border:2px solid rgba(28,200,255,.55); border-radius:14px; background:linear-gradient(180deg, rgba(12,20,28,.2), rgba(10,12,18,.4)); box-shadow: 0 0 22px rgba(28,200,255,.18) inset; transform-origin:50% 80%; animation:typing 0.35s ease-in-out infinite alternate; }
+  .hand.right{ animation-delay:.12s }
+  @keyframes typing{ from{ transform:translateY(0) rotateX(0deg)} to{ transform:translateY(2px) rotateX(8deg)} }
+  .bot{ position:relative; height:90%; display:flex; align-items:center; justify-content:center; filter: drop-shadow(0 0 22px rgba(28,200,255,.35)) drop-shadow(0 0 12px rgba(255,46,154,.2)); }
+  .bot svg { height: 100%; max-height: 420px; }
+  .wm{ position:absolute; left:24px; bottom:18px; opacity:.5; filter:grayscale(0) contrast(110%); font-weight:800; letter-spacing:1px; color:var(--cyan-soft); text-shadow: 0 0 6px rgba(28,200,255,.65); font-size: clamp(10px, 1.6vw, 14px);}
+  .wm span{ color:var(--white); opacity:.75 }
+  @media (max-width: 900px){
+    .rig{ grid-template-columns: 1fr; height: min(95vw, 720px); gap:18px; align-items:center; }
+    .pc{ height:56vh; }
+    .hands{ right:36%; }
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="grain"></div>
+    <div class="scanlines"></div>
+    <div class="glitch-fx"></div>
+
+    <div class="rig">
+      <div class="bot" aria-hidden="true">
+        <svg viewBox="0 0 320 420" preserveAspectRatio="xMidYMid meet">
+          <rect x="40" y="20" rx="22" ry="22" width="240" height="200" fill="none" stroke="url(#cyangrad)" stroke-width="7" />
+          <rect x="40" y="20" rx="22" ry="22" width="240" height="200" fill="none" stroke="url(#maggrad)" stroke-width="2" opacity=".55" />
+          <circle cx="120" cy="110" r="20" fill="var(--magenta)" />
+          <circle cx="200" cy="110" r="20" fill="var(--magenta)" />
+          <rect x="120" y="150" width="80" height="14" rx="7" fill="var(--cyan)" />
+          <path d="M70 230 Q160 260 250 230 L260 380 Q160 410 60 380 Z" fill="none" stroke="var(--cyan)" stroke-opacity=".75" stroke-width="6"/>
+          <defs>
+            <linearGradient id="cyangrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="var(--cyan)"/>
+              <stop offset="1" stop-color="var(--cyan-soft)"/>
+            </linearGradient>
+            <linearGradient id="maggrad" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="var(--magenta)"/>
+              <stop offset="1" stop-color="var(--magenta-soft)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <div class="pc">
+        <div class="monitor">
+          <div class="bezel"></div>
+          <div class="codeRain" id="codeRain"></div>
+          <div class="scanMask"></div>
+          <div class="keyboard"><div class="keys" id="keys"></div></div>
+          <div class="hands"><div class="hand"></div><div class="hand right"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid"></div>
+    <div class="desk"></div>
+
+    <div class="wm">$GL!TCH <span>— ON {XRP} LEDGER</span></div>
+  </div>
+
+<script>
+  const keys = document.getElementById('keys');
+  for(let i=0;i<84;i++){
+    const k=document.createElement('div'); k.className='key';
+    const g=document.createElement('div'); g.className='keyGlow'; g.style.animationDelay = (Math.random()*1.8)+'s';
+    k.appendChild(g); keys.appendChild(k);
+  }
+
+  const codeRain = document.getElementById('codeRain');
+  const COLS = 28;
+  const CHARS = 'ΛΣΔΞ01{}[]<>/\\\\|=+*#_%$Ð₿XRPxrplgl!tch@';
+  function makeStream(idx){
+    const s = document.createElement('pre');
+    s.className = 'stream'+(Math.random()>0.72?' alt':'');
+    s.style.left = (idx * (100/COLS) + (Math.random()*1.4)) + '%';
+    s.style.fontSize = (12 + Math.random()*6)+'px';
+    const dur = 6 + Math.random()*7;
+    s.style.animation = `fall ${dur}s linear infinite`;
+    s.textContent = Array.from({length:60},()=> CHARS[Math.floor(Math.random()*CHARS.length)]).join('\\n');
+    codeRain.appendChild(s);
+  }
+  for(let i=0;i<COLS;i++) makeStream(i);
+  const style = document.createElement('style'); style.textContent = `@keyframes fall { to { transform: translateY(220%); } }`; document.head.appendChild(style);
+
+  setInterval(()=>{
+    const m = document.querySelector('.monitor');
+    m.style.boxShadow = Math.random()>0.5
+      ? '0 0 0 2px rgba(28,200,255,.40), 0 0 52px rgba(28,200,255,.28) inset, 0 0 140px rgba(255,46,154,.09) inset'
+      : '0 0 0 2px rgba(28,200,255,.30), 0 0 32px rgba(28,200,255,.20) inset, 0 0 110px rgba(255,46,154,.06) inset';
+  }, 260);
+
+  setInterval(()=>{
+    if(Math.random() < 0.11){
+      document.body.style.filter='hue-rotate(6deg) saturate(130%)';
+      setTimeout(()=> document.body.style.filter='none', 120);
+    }
+  }, 1400);
+</script>
+</body>
+</html>
