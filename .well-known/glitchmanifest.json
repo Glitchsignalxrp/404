@@ -1,0 +1,16 @@
+{
+  "name": "GL!TCH_Signal_Archive",
+  "fragment_index": "001/404",
+  "seed_commit": "d_s_a02f9c",
+  "checksum": "178409",
+  "delta": "12.48",
+  "origin": "XRPL_pre-consensus_residual",
+  "verified": false,
+  "note": "Residual code survived reset; memory shard persists.",
+  "breadcrumbs": [
+    "/explore404/",
+    "/sysroot/devnote.txt",
+    "/.well-known/glitchmanifest.json"
+  ],
+  "echo": "the code remembers"
+}
