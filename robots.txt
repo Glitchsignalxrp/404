@@ -1,2 +1,5 @@
 User-agent: *
 Disallow: /node404.html
+User-agent: *
+Disallow: /sysroot/
+Allow: /.well-known/glitchmanifest.json
