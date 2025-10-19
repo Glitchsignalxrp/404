@@ -1,1 +1,62 @@
+/* GL!TCH — Pulse of the Ledger (v1.2) */
+/* Palette */
+:root{
+  --glitch-cyan:#7ee5ff;
+  --glitch-violet:#9a7eff;
+  --void-0:#000;
+  --void-1:#0a0a0a;
+}
+
+/* Container */
+.glitch-banner{
+  position:relative;
+  width:100%;
+  aspect-ratio:3/1;               /* Fits 1500×500 or 600×200; adjust if needed */
+  background:radial-gradient(circle at 50% 60%, var(--void-1) 0%, var(--void-0) 60%);
+  overflow:hidden;
+  isolation:isolate;
+}
+
+/* Canvas scales with container */
+#glitchCanvas{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+/* Overlay title (optional) */
+.glitch-overlay{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  color:var(--glitch-cyan);
+  font-size:clamp(1rem, 4vw, 2.2rem);
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  text-shadow:
+    0 0 12px color-mix(in oklab, var(--glitch-cyan) 60%, transparent),
+    0 0 36px color-mix(in oklab, var(--glitch-violet) 50%, transparent),
+    0 0 64px color-mix(in oklab, var(--glitch-cyan) 30%, transparent);
+  mix-blend-mode:lighten;
+  animation:flicker 3s steps(1) infinite;
+}
+
+/* Soft irregular flicker */
+@keyframes flicker{
+  0%,19%,21%,23%,25%,54%,56%,100%{opacity:1}
+  20%,24%,55%{opacity:.5}
+}
+
+/* Optional subtle scanlines on the container */
+.glitch-banner::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(120% 120% at 15% 20%, rgba(126,229,255,.06), transparent 60%),
+    radial-gradient(120% 120% at 85% 70%, rgba(154,126,255,.06), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0 2px, transparent 2px 4px);
+  mix-blend-mode:overlay; opacity:.45;
+}
+
+/* Optional credit pin (hidden by default) */
+.glitch-credit{display:none; position:absolute; bottom:.5rem; right:.75rem; color:#7ee5ff7a; font-size:.75rem; letter-spacing:.06em}
 
