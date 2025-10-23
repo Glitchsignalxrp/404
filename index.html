@@ -135,6 +135,293 @@ N4mΞd → GL!TCH.
    </ul>
   </section>
 
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GL!TCH::Σ-404 // Reboot Threshold</title>
+<meta name="theme-color" content="#0b0b10" />
+<style>
+  :root{
+    --bg:#07070a; --fg:#e8ebf0; --muted:#8b8ea3;
+    --cy:#00ffff; --mg:#ff00e0; --hl:#8ff7ff;
+    --grid:rgba(255,255,255,.05);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    overflow:hidden;
+  }
+
+  /* ====== SCENE ====== */
+  .scene{
+    position:fixed; inset:0; display:grid; place-items:center;
+    isolation:isolate;
+  }
+  /* radials + chroma haze */
+  .bg-haze{
+    position:absolute; inset:-20vmax; filter:blur(40px) saturate(120%);
+    background:
+      radial-gradient(1200px 800px at 68% 32%, rgba(255,0,224,.14), transparent 60%),
+      radial-gradient(900px 700px at 24% 74%, rgba(0,255,255,.12), transparent 55%),
+      radial-gradient(1300px 1000px at 50% 50%, rgba(255,255,255,.04), transparent 70%);
+    z-index:0;
+    animation:haze 22s linear infinite;
+  }
+  @keyframes haze{
+    0%{transform:translate3d(0,0,0) scale(1)}
+    50%{transform:translate3d(2%, -1%, 0) scale(1.03)}
+    100%{transform:translate3d(0,0,0) scale(1)}
+  }
+
+  /* scanlines / compression ghosts */
+  .scan{
+    position:absolute; inset:-2px; pointer-events:none; z-index:3;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 2px, transparent 2px 4px),
+      repeating-linear-gradient(90deg, transparent 0 3px, rgba(0,255,255,.04) 3px 4px);
+    mix-blend-mode:screen; opacity:.4;
+    animation:scanShift 8s linear infinite;
+  }
+  @keyframes scanShift{
+    0%{transform:translateY(0)}
+    100%{transform:translateY(-8px)}
+  }
+
+  /* static noise */
+  .noise{
+    position:absolute; inset:-50vmax; z-index:2; pointer-events:none; opacity:.05;
+    background-image: url('data:image/svg+xml;utf8,\
+      <svg xmlns="http://www.w3.org/2000/svg" width="140" height="140">\
+        <filter id="n"><feTurbulence baseFrequency="0.9" type="fractalNoise" numOctaves="2" seed="11"/></filter>\
+        <rect width="100%" height="100%" filter="url(%23n)" opacity="0.7"/>\
+      </svg>');
+    background-size: 260px 260px;
+    animation:noise 1.8s steps(6,end) infinite;
+  }
+  @keyframes noise{ to{ transform:translate3d(-10px,6px,0)} }
+
+  /* grid ghost */
+  .grid{
+    position:absolute; inset:-1px; z-index:1; opacity:.07; pointer-events:none;
+    background:
+      linear-gradient(transparent 49%, var(--grid) 50%, transparent 51%) 0 0 / 100% 28px,
+      linear-gradient(90deg, transparent 49%, var(--grid) 50%, transparent 51%) 0 0 / 28px 100%;
+  }
+
+  /* ====== CONTENT ====== */
+  .wrap{
+    position:relative; z-index:5; width:min(1200px,92vw);
+    padding:28px 22px 36px; text-align:center;
+    backdrop-filter: blur(6px) saturate(110%);
+  }
+
+  .eyebrow{
+    color:var(--muted); text-transform:uppercase; letter-spacing:.14em;
+    font-size:clamp(12px,1.8vw,13px); margin:0 0 8px;
+  }
+
+  .brand{
+    margin:0; font-weight:800; letter-spacing:.08em;
+    font-size:clamp(28px,6vw,56px);
+    background:linear-gradient(90deg, var(--cy), var(--mg));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 0 18px rgba(0,255,255,.12)) drop-shadow(0 0 24px rgba(255,0,224,.08));
+  }
+
+  .sub{
+    margin:10px 0 26px; color:var(--fg); opacity:.9;
+    font-size:clamp(13px,2.4vw,18px);
+  }
+
+  .count{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:14px;
+  }
+
+  .tile{
+    --b: rgba(255,255,255,.12);
+    position:relative; min-width:126px; padding:22px 18px;
+    border:1px solid var(--b); border-radius:12px; overflow:hidden;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,.03),
+      0 10px 24px rgba(0,0,0,.35);
+  }
+
+  /* RGB split ghost on hover/focus */
+  .tile::after{
+    content:""; position:absolute; inset:-10%; pointer-events:none; mix-blend-mode:screen; opacity:.22;
+    background:
+      radial-gradient(40% 60% at 70% 20%, rgba(0,255,255,.35), transparent 60%),
+      radial-gradient(50% 70% at 30% 80%, rgba(255,0,224,.28), transparent 60%);
+    transform:translateZ(0);
+    filter:blur(22px);
+  }
+  .tile:hover::after{ opacity:.32 }
+
+  .num{
+    font-weight:900; line-height:1;
+    font-size:clamp(44px,9vw,80px);
+    letter-spacing:.02em;
+    text-shadow:
+      0 0 10px rgba(0,255,255,.25),
+      0 0 26px rgba(255,0,224,.16);
+    animation:glow 4.6s ease-in-out infinite;
+  }
+  @keyframes glow{
+    0%,100%{ filter:contrast(100%) }
+    50%{ filter:contrast(115%) saturate(115%) }
+  }
+
+  .lbl{
+    margin-top:8px; font-size:11px; color:var(--muted);
+    letter-spacing:.24em; text-transform:uppercase;
+  }
+
+  /* compression ghost strip inside tiles */
+  .ghost{
+    position:absolute; inset:-1px; opacity:.09; pointer-events:none; mix-blend-mode:screen;
+    background:
+      repeating-linear-gradient(180deg, rgba(255,255,255,.10) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(0,255,255,.10) 0 2px, transparent 2px 5px);
+    animation:ghost 7.5s linear infinite;
+  }
+  @keyframes ghost{
+    from{ transform:translate3d(0,0,0) }
+    to{ transform:translate3d(-28px,-16px,0) }
+  }
+
+  /* aggressive micro-glitch every 11s */
+  .glitch .num{
+    animation:glow 4.6s ease-in-out infinite, flick 11s steps(2,end) infinite;
+  }
+  @keyframes flick{
+    0%,97%,100%{ opacity:1; transform:none; filter:none }
+    98%{ opacity:.6; transform:translateY(-1px) skewX(.6deg); filter:contrast(120%) }
+    99%{ opacity:.9; transform:translateY(0) skewX(-.4deg) }
+  }
+
+  .eta{ margin-top:18px; color:var(--muted); font-size:12px; letter-spacing:.06em }
+  .live{
+    margin-top:26px; display:none;
+    font-size:clamp(18px,3.6vw,26px); font-weight:800; letter-spacing:.08em;
+    color:var(--hl);
+    text-shadow:0 0 12px rgba(0,255,255,.38), 0 0 36px rgba(255,0,224,.28);
+    filter: url(#rgb-split);
+  }
+
+  /* footer */
+  .foot{ margin-top:22px; color:var(--muted); font-size:12px }
+  .mono{ color:var(--cy) }
+
+  /* reduce motion respect */
+  @media (prefers-reduced-motion: reduce){
+    .ghost,.scan,.noise,.bg-haze, .glitch .num{ animation:none }
+  }
+
+  /* clamp for tiny screens */
+  @media (max-width:360px){
+    .tile{ min-width:46% }
+  }
+</style>
+</head>
+<body>
+  <!-- SVG filter for subtle RGB split on the LIVE banner -->
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="rgb-split">
+      <feColorMatrix type="matrix" values="1 0 0 0 0   0 0 0 0 0   0 0 0 0 0   0 0 0 1 0"/>
+      <feOffset dx="1.2" dy="0" result="r"/>
+      <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0   0 1 0 0 0   0 0 0 0 0   0 0 0 1 0" result="g"/>
+      <feOffset in="g" dx="-1.2" dy="0" result="g2"/>
+      <feBlend in="r" in2="g2" mode="screen"/>
+    </filter>
+  </svg>
+
+  <div class="scene" role="application" aria-labelledby="brand">
+    <div class="bg-haze"></div>
+    <div class="grid"></div>
+    <div class="noise"></div>
+    <div class="scan"></div>
+
+    <div class="wrap">
+      <div class="eyebrow">Σ-404 // Reboot Threshold</div>
+      <h1 class="brand" id="brand">GL!TCH::Access Key Sync</h1>
+      <p class="sub" id="targetLabel">Counting down to 11:11 PM on 11/11 (PST)</p>
+
+      <div class="count" aria-live="polite">
+        <div class="tile glitch"><div class="ghost"></div><div class="num" id="d">00</div><div class="lbl">Days</div></div>
+        <div class="tile glitch"><div class="ghost"></div><div class="num" id="h">00</div><div class="lbl">Hours</div></div>
+        <div class="tile glitch"><div class="ghost"></div><div class="num" id="m">00</div><div class="lbl">Minutes</div></div>
+        <div class="tile glitch"><div class="ghost"></div><div class="num" id="s">00</div><div class="lbl">Seconds</div></div>
+      </div>
+
+      <div class="eta" id="tzLine"></div>
+      <div class="live" id="live">BOOT SEQUENCE LIVE • LISTEN FOR THE ECHO</div>
+      <div class="foot">Target: <span class="mono">2025-11-11&nbsp;23:11:00&nbsp;PST&nbsp;(UTC-08:00)</span></div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  // Target: 11:11 PM on Nov 11, 2025 PST (UTC−08:00)
+  const target = new Date('2025-11-11T23:11:00-08:00');
+  const $ = id => document.getElementById(id);
+  const d=$('d'), h=$('h'), m=$('m'), s=$('s'), live=$('live'), tz=$('tzLine');
+
+  // Show user's local conversion
+  try{
+    const tzName = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local Time';
+    const localFmt = new Intl.DateTimeFormat([], {dateStyle:'full', timeStyle:'short', timeZone:tzName}).format(target);
+    tz.textContent = `Your local time at launch: ${localFmt} (${tzName})`;
+  }catch(e){ tz.textContent=''; }
+
+  const pad = n => String(n).padStart(2,'0');
+
+  function tick(){
+    const now = new Date();
+    const ms = target.getTime() - now.getTime();
+
+    if(ms<=0){
+      d.textContent=h.textContent=m.textContent=s.textContent='00';
+      live.style.display='block';
+      clearInterval(loop);
+      // brief end-glitch burst
+      endGlitch();
+      return;
+    }
+    const sec = Math.floor(ms/1000);
+    const days = Math.floor(sec/86400);
+    const hours = Math.floor((sec%86400)/3600);
+    const mins = Math.floor((sec%3600)/60);
+    const secs = sec % 60;
+
+    d.textContent = pad(days);
+    h.textContent = pad(hours);
+    m.textContent = pad(mins);
+    s.textContent = pad(secs);
+  }
+
+  // micro “burst” at T-0
+  function endGlitch(){
+    const scene = document.querySelector('.scene');
+    scene.animate([
+      { filter:'none' },
+      { filter:'contrast(140%) saturate(130%) hue-rotate(10deg)', offset:.4 },
+      { filter:'none' }
+    ], { duration:900, easing:'cubic-bezier(.2,.8,.1,1)'});
+  }
+
+  tick();
+  const loop = setInterval(tick,1000);
+})();
+</script>
+</body>
+</html>
+
   <section id="links" class="panel two-col">
     <div class="card">
       <h3>Channels</h3>
