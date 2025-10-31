@@ -121,3 +121,18 @@ body::after {
   100% { opacity: 1; }
 }
 
+setTimeout(() => {
+  const output = document.getElementById('terminalOutput');
+  let corruption = output.innerText.split('');
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i < corruption.length) {
+      corruption[i] = Math.random() > 0.9 ? '█' : corruption[i];
+      output.innerText = corruption.join('');
+      i++;
+    } else {
+      clearInterval(interval);
+    }
+  }, 50);
+}, 6000);
+
