@@ -136,3 +136,22 @@ setTimeout(() => {
   }, 50);
 }, 6000);
 
+<style>
+/* Minimal translator styling (safe to paste) */
+.translator-container{display:grid;gap:10px;margin:24px 0;}
+.translator-container textarea{
+  width:100%;min-height:110px;resize:vertical;background:#0a0f16;color:#d9e7ff;
+  border:1px solid rgba(0,234,255,.22);border-radius:8px;padding:12px;
+  font:500 13px/1.45 ui-monospace,Menlo,Consolas,monospace;
+}
+.translator-actions{display:flex;gap:8px;flex-wrap:wrap}
+.glitch-btn{
+  background:linear-gradient(90deg,rgba(0,234,255,.18),rgba(255,0,224,.18));
+  border:1px solid rgba(0,234,255,.25);color:#d9e7ff;padding:10px 14px;border-radius:8px;
+  font:700 12px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;cursor:pointer
+}
+#glitchOutput{
+  background:#04060a;border:1px dashed rgba(255,0,224,.28);border-radius:8px;padding:12px;min-height:64px;
+  font:600 13px/1.55 ui-monospace,Menlo,Consolas,monospace;color:#00eaff
+}
+</style>
