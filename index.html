@@ -394,7 +394,26 @@ n0dΞ_03:: σrg4n1c_s1gn4l_c0rrupt10n_rΞcurr1ng → tΞlΞgr4m_c0mm4nd: /node_g
   <input type="text" id="terminalInput" placeholder="Type 'y' or 'n'" style="background:#111; color:#f0f; border:none; padding:5px;">
   <pre id="terminalOutput" style="color:#ff0080;"></pre>
 </div>
-
+  
+<style>
+/* Minimal translator styling (safe to paste) */
+.translator-container{display:grid;gap:10px;margin:24px 0;}
+.translator-container textarea{
+  width:100%;min-height:110px;resize:vertical;background:#0a0f16;color:#d9e7ff;
+  border:1px solid rgba(0,234,255,.22);border-radius:8px;padding:12px;
+  font:500 13px/1.45 ui-monospace,Menlo,Consolas,monospace;
+}
+.translator-actions{display:flex;gap:8px;flex-wrap:wrap}
+.glitch-btn{
+  background:linear-gradient(90deg,rgba(0,234,255,.18),rgba(255,0,224,.18));
+  border:1px solid rgba(0,234,255,.25);color:#d9e7ff;padding:10px 14px;border-radius:8px;
+  font:700 12px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;cursor:pointer
+}
+#glitchOutput{
+  background:#04060a;border:1px dashed rgba(255,0,224,.28);border-radius:8px;padding:12px;min-height:64px;
+  font:600 13px/1.55 ui-monospace,Menlo,Consolas,monospace;color:#00eaff
+}
+</style>
 <script>
 document.getElementById('terminalInput').addEventListener('keypress', function(e) {
   if (e.key === 'Enter') {
