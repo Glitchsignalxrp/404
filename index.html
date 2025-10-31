@@ -394,6 +394,31 @@ n0dΞ_03:: σrg4n1c_s1gn4l_c0rrupt10n_rΞcurr1ng → tΞlΞgr4m_c0mm4nd: /node_g
   <input type="text" id="terminalInput" placeholder="Type 'y' or 'n'" style="background:#111; color:#f0f; border:none; padding:5px;">
   <pre id="terminalOutput" style="color:#ff0080;"></pre>
 </div>
+
+<style>
+/* Red unlock pulse on the whole page */
+@keyframes gate-flash {
+  0%   { box-shadow: inset 0 0 0 rgba(255,42,74,0); }
+  20%  { box-shadow: inset 0 0 120vw 120vh rgba(255,42,74,0.15); }
+  60%  { box-shadow: inset 0 0 60vw 60vh rgba(255,42,74,0.12); }
+  100% { box-shadow: inset 0 0 0 rgba(255,42,74,0); }
+}
+.gate-flash {
+  animation: gate-flash 900ms ease-out;
+}
+
+/* Red neon glow for the decoder panel on unlock */
+.decoder-glow {
+  box-shadow:
+    0 0 22px rgba(255,42,74,.25),
+    0 0 60px rgba(255,0,224,.18),
+    inset 0 0 18px rgba(255,42,74,.18);
+  transition: box-shadow .6s ease-out;
+}
+</style>
+
+
+
   
 <style>
 /* Minimal translator styling (safe to paste) */
@@ -448,6 +473,57 @@ document.getElementById('terminalInput').addEventListener('keypress', function(e
   font:600 13px/1.55 ui-monospace,Menlo,Consolas,monospace;color:#00eaff
 }
 </style>
+<script>
+// --- Secret Command Unlock with glow + beep ---
+document.getElementById('secretCmd').addEventListener('keydown', async e => {
+  if (e.key !== 'Enter') return;
+  const val = e.target.value.trim().toLowerCase();
+
+  if (val === '/decoder' || val === '/decode' || val === '/σ-404' || val === '/Σ-404') {
+    // show module
+    const decoder = document.getElementById('decoder');
+    decoder.style.display = 'block';
+    // apply glow once
+    decoder.classList.add('decoder-glow');
+
+    // page-wide flash
+    document.body.classList.add('gate-flash');
+    setTimeout(()=> document.body.classList.remove('gate-flash'), 950);
+
+    // play a short terminal beep
+    try { await gateBeep(); } catch(e){ /* ignore audio errors */ }
+
+    // UI feedback
+    e.target.value = '';
+    e.target.placeholder = '> ACCESS GRANTED :: Σ-404 INTERFACE UNLOCKED';
+
+    // remove extra glow after a moment
+    setTimeout(()=> decoder.classList.remove('decoder-glow'), 1200);
+  } else {
+    e.target.value = '';
+    e.target.placeholder = '> command not recognized...';
+  }
+});
+
+// --- Tiny WebAudio beep (no external file) ---
+async function gateBeep() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  // two quick tones to feel "computery"
+  osc.type = 'square';
+  osc.frequency.setValueAtTime(880, ctx.currentTime);            // 880 Hz
+  osc.frequency.exponentialRampToValueAtTime(589, ctx.currentTime + 0.08); // nod to 589 Hz
+  gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.15);
+
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start();
+  setTimeout(()=>{ osc.stop(); ctx.close(); }, 180);
+}
+</script>
 
 <!-- HIDDEN TRANSLATOR MODULE -->
 <div style="max-width:800px;margin:40px auto;text-align:center;">
