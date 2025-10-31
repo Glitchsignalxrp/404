@@ -109,4 +109,15 @@ body::after {
     repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 2px, transparent 2px 4px);
   mix-blend-mode: overlay; opacity:.45;
 }
+.glitch-btn:hover {
+  animation: flicker 0.4s infinite alternate;
+  color: #f0f;
+  text-shadow: 0 0 3px #0ff, 0 0 6px #f0f;
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
 
