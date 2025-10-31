@@ -410,6 +410,39 @@ document.getElementById('terminalInput').addEventListener('keypress', function(e
 </script>
 
 
+  <style>
+/* Minimal translator styling (safe to paste) */
+.translator-container{display:grid;gap:10px;margin:24px 0;}
+.translator-container textarea{
+  width:100%;min-height:110px;resize:vertical;background:#0a0f16;color:#d9e7ff;
+  border:1px solid rgba(0,234,255,.22);border-radius:8px;padding:12px;
+  font:500 13px/1.45 ui-monospace,Menlo,Consolas,monospace;
+}
+.translator-actions{display:flex;gap:8px;flex-wrap:wrap}
+.glitch-btn{
+  background:linear-gradient(90deg,rgba(0,234,255,.18),rgba(255,0,224,.18));
+  border:1px solid rgba(0,234,255,.25);color:#d9e7ff;padding:10px 14px;border-radius:8px;
+  font:700 12px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;cursor:pointer
+}
+#glitchOutput{
+  background:#04060a;border:1px dashed rgba(255,0,224,.28);border-radius:8px;padding:12px;min-height:64px;
+  font:600 13px/1.55 ui-monospace,Menlo,Consolas,monospace;color:#00eaff
+}
+</style>
+
+<section class="glitch-panel" style="max-width:800px;margin:24px auto;">
+  <div class="glitch-title">/Σ-404 DΞC0DΞR 1NTΞRF4CΞ</div>
+  <div class="translator-container">
+    <textarea id="glitchInput" placeholder="Enter GL!TCH text here… e.g. ΣystΞm_RΞsp0nsΞ"></textarea>
+    <div class="translator-actions">
+      <button class="glitch-btn" onclick="translateGlitch()">Decode → Plain</button>
+      <button class="glitch-btn" onclick="encodeGlitch()">Encode → GL!TCH</button>
+      <button class="glitch-btn" onclick="copyDecoded()">Copy Output</button>
+    </div>
+    <pre id="glitchOutput"></pre>
+  </div>
+</section>
+
 
   <style>
 @keyframes glitchFlicker {
@@ -526,6 +559,40 @@ Stay tuned. Stay detached.<br>
 
   
 
+<script>
+// Mapping tables
+const toPlain = {
+  'Ξ':'E','Σ':'S','Δ':'A','σ':'o','μ':'u','Ω':'O','λ':'l','β':'b','π':'n',
+  '0':'o','1':'i','3':'e','4':'a','5':'s','7':'t'
+};
+const toGlitch = {
+  'A':'Δ','a':'4','E':'Ξ','e':'3','S':'Σ','s':'5','O':'Ω','o':'0','I':'I','i':'1','T':'T','t':'7','u':'μ','l':'λ','b':'β','n':'π'
+};
+
+// Decode GL!TCH → Plain
+function translateGlitch(){
+  const src = (document.getElementById('glitchInput')?.value || '');
+  const out = Array.from(src).map(ch => toPlain[ch] ?? ch).join('');
+  const node = document.getElementById('glitchOutput');
+  if(node) node.textContent = out;
+}
+
+// Encode Plain → GL!TCH (fun extra)
+function encodeGlitch(){
+  const src = (document.getElementById('glitchInput')?.value || '');
+  const out = Array.from(src).map(ch => toGlitch[ch] ?? toGlitch[ch.toUpperCase()] ?? ch).join('');
+  const node = document.getElementById('glitchOutput');
+  if(node) node.textContent = out;
+}
+
+// Copy result
+function copyDecoded(){
+  const node = document.getElementById('glitchOutput');
+  if(!node) return;
+  const text = node.textContent || '';
+  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text);
+}
+</script>
 
 </body>
 </html>
