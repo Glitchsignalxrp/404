@@ -430,18 +430,67 @@ document.getElementById('terminalInput').addEventListener('keypress', function(e
 }
 </style>
 
-<section class="glitch-panel" style="max-width:800px;margin:24px auto;">
-  <div class="glitch-title">/Σ-404 DΞC0DΞR 1NTΞRF4CΞ</div>
-  <div class="translator-container">
-    <textarea id="glitchInput" placeholder="Enter GL!TCH text here… e.g. ΣystΞm_RΞsp0nsΞ"></textarea>
-    <div class="translator-actions">
+<!-- HIDDEN TRANSLATOR MODULE -->
+<div style="max-width:800px;margin:40px auto;text-align:center;">
+  <!-- SECRET COMMAND INPUT -->
+  <input 
+    id="secretCmd" 
+    placeholder="> enter command..." 
+    style="width:100%;max-width:500px;background:#0a0f16;color:#00eaff;border:1px solid rgba(255,0,224,.3);
+           border-radius:8px;padding:12px;font:600 13px ui-monospace,Menlo,Consolas,monospace;text-align:center;"
+  >
+</div>
+
+<!-- TRANSLATOR BLOCK (INITIALLY HIDDEN) -->
+<div id="decoder" style="display:none;max-width:800px;margin:24px auto;">
+  <div class="glitch-title" style="text-align:center;margin-bottom:12px;">/Σ-404 DΞC0DΞR 1NTΞRF4CΞ</div>
+  <div class="translator-container" style="display:grid;gap:10px;">
+    <textarea id="glitchInput" placeholder="Enter GL!TCH text here…"></textarea>
+    <div class="translator-actions" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
       <button class="glitch-btn" onclick="translateGlitch()">Decode → Plain</button>
       <button class="glitch-btn" onclick="encodeGlitch()">Encode → GL!TCH</button>
       <button class="glitch-btn" onclick="copyDecoded()">Copy Output</button>
     </div>
     <pre id="glitchOutput"></pre>
   </div>
-</section>
+</div>
+
+<script>
+// --- Secret Command Unlock ---
+document.getElementById('secretCmd').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const val = e.target.value.trim().toLowerCase();
+    if (val === '/decoder' || val === '/decode' || val === '/Σ-404') {
+      document.getElementById('decoder').style.display = 'block';
+      e.target.value = '';
+      e.target.placeholder = '> ACCESS GRANTED :: Σ-404 INTERFACE UNLOCKED';
+    } else {
+      e.target.value = '';
+      e.target.placeholder = '> command not recognized...';
+    }
+  }
+});
+
+// --- Translator Functions ---
+const toPlain = {'Ξ':'E','Σ':'S','Δ':'A','σ':'o','μ':'u','Ω':'O','λ':'l','β':'b','π':'n','0':'o','1':'i','3':'e','4':'a','5':'s','7':'t'};
+const toGlitch = {'A':'Δ','a':'4','E':'Ξ','e':'3','S':'Σ','s':'5','O':'Ω','o':'0','I':'I','i':'1','T':'T','t':'7','u':'μ','l':'λ','b':'β','n':'π'};
+
+function translateGlitch(){
+  const src = (document.getElementById('glitchInput')?.value || '');
+  const out = Array.from(src).map(ch => toPlain[ch] ?? ch).join('');
+  document.getElementById('glitchOutput').textContent = out;
+}
+function encodeGlitch(){
+  const src = (document.getElementById('glitchInput')?.value || '');
+  const out = Array.from(src).map(ch => toGlitch[ch] ?? toGlitch[ch.toUpperCase()] ?? ch).join('');
+  document.getElementById('glitchOutput').textContent = out;
+}
+function copyDecoded(){
+  const text = document.getElementById('glitchOutput').textContent;
+  navigator.clipboard?.writeText(text);
+}
+</script>
+
 
 
   <style>
