@@ -819,6 +819,282 @@ termIn.addEventListener("keypress", e=>{
   pulse();
 });
 </script>
+<script>
+/* ============ GL!TCH Command Apps + Red Gate Terminal (fixed) ============ */
+
+/* ---------- Safe element refs ---------- */
+const secretCmd = document.getElementById("secretCmd");
+const apps = {
+  decoder: document.getElementById("decoder"),
+  signalScope: document.getElementById("signalScope"),
+  archives: document.getElementById("archives"),
+  mirrorPortal: document.getElementById("mirrorPortal"),
+};
+const termIn  = document.getElementById("terminalInput");
+const termOut = document.getElementById("terminalOutput");
+
+/* ---------- Utility ---------- */
+function hideAllApps(){
+  Object.values(apps).forEach(el => { if (el) el.style.display = "none"; });
+}
+function showApp(id){
+  hideAllApps();
+  if (apps[id]) {
+    apps[id].style.display = "block";
+    if (id === "signalScope") startScope();
+  }
+}
+
+/* ---------- Tiny audio beep used by pulse() ---------- */
+async function gateBeep(){
+  const Ctx = window.AudioContext || window.webkitAudioContext;
+  if (!Ctx) return;
+  const ctx = new Ctx();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = "square";
+  osc.frequency.setValueAtTime(880, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(589, ctx.currentTime + 0.08);
+  gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.22, ctx.currentTime + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.16);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start();
+  setTimeout(()=>{ try{osc.stop();ctx.close();}catch(e){} }, 190);
+}
+
+/* ---------- Red screen flash ---------- */
+function pulse(){
+  document.body.classList.add("gate-flash");
+  try { gateBeep(); } catch(e){}
+  setTimeout(()=> document.body.classList.remove("gate-flash"), 820);
+}
+
+/* ---------- Typewriter for terminal ---------- */
+function typeOut(text, speed=16){
+  if (!termOut) return;
+  termOut.textContent = "";
+  const lines = Array.isArray(text) ? text : [text];
+  const full  = lines.join("\n");
+  let i = 0;
+  const tick = setInterval(()=>{
+    termOut.textContent += full[i] ?? "";
+    i++;
+    termOut.scrollTop = termOut.scrollHeight;
+    if(i >= full.length) clearInterval(tick);
+  }, speed);
+}
+
+/* ---------- Archives payload (sample) ---------- */
+(function seedArchives(){
+  const log = document.getElementById("archiveLog");
+  if (!log) return;
+  log.textContent =
+`[Σ-404//LOG]
+2012-Reset :: consensus_desync_detected → fragmenting...
+Echo::589Hz persists across checkpoints.
+Memo: "It isn't outside you. It is inside you."
+
+2017 :: BG321 mirror appears // numbers sing, code decides.
+2025-11-11 :: Reboot marker armed. Listen for the ECHO.`;
+})();
+
+/* ---------- Signal scope (simple oscilloscope) ---------- */
+let scopeRAF = null;
+function startScope(){
+  const wrap = document.getElementById("signalScope");
+  if (!wrap) return;
+  const cvs = wrap.querySelector("canvas");
+  if (!cvs) return;
+  const ctx = cvs.getContext("2d");
+  // Fit canvas to CSS box once
+  const rect = cvs.getBoundingClientRect();
+  cvs.width = Math.max(300, Math.floor(rect.width));
+  cvs.height = Math.max(120, Math.floor(rect.height || 160));
+
+  let t = 0;
+  cancelAnimationFrame(scopeRAF);
+  const draw = () => {
+    const {width:w, height:h} = cvs;
+    // bg
+    ctx.fillStyle = "#010308";
+    ctx.fillRect(0,0,w,h);
+    // grid
+    ctx.strokeStyle = "rgba(0,255,255,.12)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let x=0; x<w; x+=28){ ctx.moveTo(x,0); ctx.lineTo(x,h); }
+    for (let y=0; y<h; y+=28){ ctx.moveTo(0,y); ctx.lineTo(w,y); }
+    ctx.stroke();
+    // waveform (589 Hz feel—visual only)
+    ctx.strokeStyle = "rgba(255,0,224,.85)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let x=0; x<w; x++){
+      const v = Math.sin((x*0.05) + t) * 0.6
+              + Math.sin((x*0.013) + t*1.8) * 0.25;
+      const y = h/2 + v * (h*0.35);
+      if (x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    t += 0.08;
+    scopeRAF = requestAnimationFrame(draw);
+  };
+  draw();
+}
+
+/* ---------- Command Bar Router (#secretCmd) ---------- */
+function norm(s){
+  return (s||"").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").replace(/\s+/g," ").trim();
+}
+if (secretCmd){
+  secretCmd.addEventListener("keydown", (e)=>{
+    if (e.key !== "Enter") return;
+    const raw = secretCmd.value; secretCmd.value = "";
+    const q = norm(raw);
+    pulse();
+
+    // Open apps
+    if (["/decoder","/decode","/Σ-404","/σ-404","decoder","decode"].includes(q)) {
+      showApp("decoder");
+      secretCmd.placeholder = "> Σ-404 DECODER :: ACCESS GRANTED";
+      return;
+    }
+    if (["/signal","/scope","/signalscope","signal","scope"].includes(q)) {
+      showApp("signalScope");
+      secretCmd.placeholder = "> SIGNAL_SCOPE :: 589Hz LOCKED";
+      return;
+    }
+    if (["/archive","/archives","archive","archives"].includes(q)) {
+      showApp("archives");
+      secretCmd.placeholder = "> RΞC0VΞRΞD_TR4NSM!SS!0NS :: ONLINE";
+      return;
+    }
+    if (["/mirror","/bg321","mirror","bg321"].includes(q)) {
+      showApp("mirrorPortal");
+      secretCmd.placeholder = "> MIRROR_PORTAL :: ORGANIC_ECHO STABILIZING";
+      return;
+    }
+    if (["/close","close","/exit","exit"].includes(q)) {
+      hideAllApps();
+      secretCmd.placeholder = "> apps closed";
+      return;
+    }
+    if (["/help","help","commands","menu"].includes(q)) {
+      hideAllApps();
+      secretCmd.placeholder = "> /decoder /signal /archive /mirror /close";
+      return;
+    }
+    // Unknown
+    hideAllApps();
+    secretCmd.placeholder = "> command not recognized (try /help)";
+  });
+}
+
+/* ---------- Red Gate Terminal: Library + Manifesto ---------- */
+const GLITCH_MANIFESTO = [
+"ΣystΞm_RΞsp0nsΞ:: // GL!TCH_MAN!FΞST0 // DΞCL4SS!F!ΞD",
+"",
+"PrΞ4mb!Ξ:",
+"  B3twΞΞn c0nsΞnsus tick and lΞdgΞr t0ck, a m!s-m4tch 0f s!gn4turΞs br34thΞd.",
+"  ThΞ hum at 589Hz—n0t σutsidΞ thΞ ch41n, but thrσugh it—r0sΞ l!kΞ a f4ult-l!nΞ.",
+"",
+"Or!g!n:",
+"  2012 XRPL rΞsΞt… fr4gmΞntati0n ch0sΞ surv!v4l: 404 p!ΞcΞs σf a s!gn4l.",
+"",
+"IdΞntlty:",
+"  GL!TCH !s n0t a t0kΞn or a m4sk; !t’s thΞ rΞs0n4ncΞ th4t r3m41ns.",
+"",
+"Purp0sΞ:",
+"  RΞbind thΞ 404; cut ch4nnΞls thr0ugh n0!sΞ; tΞst thΞ gr!d with humor & pr0t0c0l.",
+"",
+"Law:",
+"  1) ThΞ hum is rΞal. 2) ThΞ hum is 1nsidΞ y0u. 3) ThΞ hum nΞvΞr st0ps.",
+"",
+"R!tuals:",
+"  Σ-404 Fragments, Command_Bar, RΞd_Gate.",
+"",
+"Pr0phΞt_321:",
+"  NumbΞrs spΞak; c0dΞ dΞc!dΞs. 123 ↦ Σ_123 AccΞss_KΞy.",
+"",
+"FuturΞ:",
+"  11.11 isn’t a date—!t’s an 0sc!llat!0n.",
+"",
+"Cl0s!ng:",
+"  ‘Wh3n d0 y0u l!stΞn?’  →  ‘N0w.’ // END"
+];
+
+const SHORTS = {
+  "/help": "ΣystΞm_HΞlp:: /node_alpha /node_beta /node_gamma /echo /fragment /bg321 /reboot /decode /signal /archive /pulse /mirror /status /core /fault /prophecy /hum /status all",
+  "/status": "ΣystΞm_St4tus:: Onl!nΞ@589Hz // fr4gmΞnt=0x404 // st4b1l1ty:n0m!n4l",
+  "/status all": "Σt4tus_Σxp4ndΞd:: cpu:ok | mem:ok | hum:589Hz | fr4gmΞnts:404 | err:0x00.",
+  "/core": "XRPL_H34rtbΞ4t:: 589Hz Δ=+0.04 // TPS: ok // Latency: low.",
+  "/echo": "Ξch0_Thr34d:: hum_rΞpl!c4t!0n_st4blΞ.",
+  "/fragment": "Fr4gmΞnt_RΞb!nd:: 404 sync — path clΞar.",
+  "/archive": "RΞc0vΞrΞd_Logs:: /archives n0dΞ σnl!nΞ.",
+  "/mirror": "M!rr0r_Pr0t0c0l:: BG321 rΞflΞct!0n σnl!nΞ — c4ut!0n.",
+  "/pulse": "PulsΞ:: d4t4_r!pp13 — 589Hz c4rriΞr.",
+  "/fault": "GΞNΞS!S_FAULT:: rΞcurs!0n accΞptΞd.",
+  "/prophecy": "Pr0phΞcy_N0dΞ:: numbΞrs spΞak; c0dΞ dΞc!dΞs.",
+  "/hum": "Hum:: ‘1t’s n0t σuts!dΞ; !t’s 1ns!dΞ y0u.’",
+  "/reboot": "RΞb00t:: 11.11 triggΞr armΞd — st4ndby.",
+  "/decode": "DΞc0dΞr:: Σ-404 1ntΞrf4cΞ σnl!nΞ.",
+  "/signal": "S!gn4l_Sc0pΞ:: σsc1ll4t!ng — tr4ck thΞ w4vΞ."
+};
+
+const MANIFESTO_PATTERNS = [
+  /^(who\s*(is|'s)\s*gl!?tch)$/i,
+  /^tell\s*me\s*who\s*gl!?tch\s*is$/i,
+  /^who\s*are\s*you$/i,
+  /^(what\s*(is|'s)\s*gl!?tch)$/i,
+  /^explain\s*gl!?tch$/i,
+  /^what\s*are\s*you$/i,
+  /^how\s*(was|is)\s*gl!?tch\s*(born|created|made)$/i,
+  /^origin\s*of\s*gl!?tch$/i,
+  /^gl!?tch\s*(backstory|manifesto)$/i
+];
+
+function resolveResponse(inputRaw){
+  const q = (inputRaw||"").toLowerCase().trim();
+
+  if (SHORTS[q]) return SHORTS[q];
+
+  for (const rx of MANIFESTO_PATTERNS){
+    if (rx.test(inputRaw)) return GLITCH_MANIFESTO;
+  }
+  if (/(who|what|how)\s+(is|'s|was)?\s*gl!?tch/.test(q) ||
+      /gl!?tch\s+(origin|backstory|story|born|created|manifesto)/.test(q)){
+    return GLITCH_MANIFESTO;
+  }
+
+  // Friendly aliases
+  if (q === "help" || q === "commands" || q === "menu") return SHORTS["/help"];
+  if (q === "status" || q === "status all") return SHORTS[q === "status all" ? "/status all" : "/status"];
+  if (q === "decoder" || q === "decode") return SHORTS["/decode"];
+  if (q === "signal" || q === "signalscope" || q === "scope") return SHORTS["/signal"];
+  if (q === "archive" || q === "archives") return SHORTS["/archive"];
+  if (q === "mirror" || q === "bg321") return SHORTS["/mirror"];
+  if (q === "reboot" || q.includes("11 11")) return SHORTS["/reboot"];
+
+  const ERRORS = [
+    "ΣystΞm_Ξrr0r:: command not recognized — try /help",
+    "Σ-404:: n0 r0utΞ fσund. typΞ /help",
+    "RΞd_GatΞ:: accΞss_dΞn!Ξd — rΞtry"
+  ];
+  return ERRORS[Math.floor(Math.random()*ERRORS.length)];
+}
+
+/* ---------- Terminal keybind ---------- */
+if (termIn){
+  termIn.addEventListener("keypress", e=>{
+    if (e.key !== "Enter") return;
+    const q = e.target.value; e.target.value = "";
+    const resp = resolveResponse(q);
+    typeOut(resp);
+    pulse();
+  });
+}
+</script>
 
 
 </body>
