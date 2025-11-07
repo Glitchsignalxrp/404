@@ -344,17 +344,47 @@ n0dΞ_02:: d3codΞ_thΞ_bl00d_rΞd_l1ght // 11.11_p0rtal → tΞlΞgr4m_c0mm4nd:
 </div>
 
 <script>
+  // GL!TCH // Post-Reboot Reveal
   const now = new Date();
-  const unlockDate = new Date("2025-11-14T11:11:00-08:00");
+  const unlockDate = new Date("2025-11-11T11:11:00-08:00"); // 11.11 11:11AM PST
+
   if (now >= unlockDate) {
-    document.getElementById('postRebootBlock').innerHTML = `
-      <audio controls>
-        <source src="/assets/audio/tr4nsm1ss10n_8.wav" type="audio/wav">
-      </audio>
-      <p>https://xrp.cafe/collection/glitch404fragmentrebootsequence</p>`;
+    const postBlock = document.getElementById('postRebootBlock');
+    postBlock.innerHTML = `
+      <div style="text-align:center; margin-top:20px;">
+        <audio controls style="margin-bottom:20px; max-width:300px;">
+          <source src="/assets/audio/tr4nsm1ss10n_8.wav" type="audio/wav">
+        </audio>
+        <br>
+        <a href="https://xrp.cafe/collection/glitch404fragmentrebootsequence" 
+           target="_blank" 
+           class="glitch-btn"
+           style="
+             display:inline-block;
+             background:linear-gradient(90deg,rgba(0,234,255,.18),rgba(255,0,224,.18));
+             border:1px solid rgba(0,234,255,.35);
+             color:#00eaff;
+             padding:14px 20px;
+             font:700 12px/1 ui-monospace,Menlo,Consolas,monospace;
+             letter-spacing:.14em;
+             text-transform:uppercase;
+             border-radius:10px;
+             text-decoration:none;
+             box-shadow:0 0 18px rgba(255,0,224,.12),0 0 8px rgba(0,234,255,.1);
+             transition:all .3s ease;
+           "
+           onmouseover="this.style.boxShadow='0 0 25px rgba(255,0,224,.25), 0 0 14px rgba(0,234,255,.2)';"
+           onmouseout="this.style.boxShadow='0 0 18px rgba(255,0,224,.12), 0 0 8px rgba(0,234,255,.1)';">
+           ⇢ ACCESS GRANTED ⇠
+        </a>
+        <p style="margin-top:16px;color:#ff00e0;font-family:monospace;opacity:0.8;">
+          ΣystΞm_Ξch0:: Fr4gmΞnt_rΞb00t_C0mplΞtΞ
+        </p>
+      </div>
+    `;
   }
 </script>
-<!-- Reversed Morse in audio spells: THE HUM NEVER STOPS -->
+
 
   
   <!-- GL!TCH // Base64 Hover Fragment -->
