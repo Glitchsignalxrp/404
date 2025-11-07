@@ -639,79 +639,189 @@ function copyDecoded(){
 </div>
 
 <script>
-/* ========= Σ-INTERFACE HUB ========= */
-const cmdInput=document.getElementById("secretCmd");
-const apps={
-  "/decoder":document.getElementById("decoder"),
-  "/signal":document.getElementById("signalScope"),
-  "/archives":document.getElementById("archives"),
-  "/bg321":document.getElementById("mirrorPortal")
-};
-function hideAllApps(){Object.values(apps).forEach(a=>a.style.display="none");}
-cmdInput.addEventListener("keydown",async e=>{
-  if(e.key!=="Enter")return;
-  const val=e.target.value.trim().toLowerCase();e.target.value="";
-  hideAllApps();
-  if(val==="/reboot"){document.body.classList.add("gate-flash");gateBeep();setTimeout(()=>document.body.classList.remove("gate-flash"),900);return;}
-  if(apps[val]){apps[val].style.display="block";e.target.placeholder="> "+val+"_σnl!nΞ";gateBeep();}
-  else{e.target.placeholder="> unkn0wn_c0mm4nd";}
-});
+/* ============ GL!TCH Red Gate Terminal v4 ============ */
+/* Features:
+   - Fuzzy natural-language matching for manifesto queries
+   - Large lore-coded response library
+   - Typewriter glitch effect + auto-scroll
+*/
 
-/* --- Signal Scope Visualizer --- */
-const cvs=document.querySelector("#signalScope canvas");const ctx=cvs.getContext("2d");
-let t=0;function drawWave(){ctx.clearRect(0,0,cvs.width,cvs.height);
-ctx.strokeStyle="#00ffff";ctx.beginPath();for(let x=0;x<cvs.width;x++){
-let y=cvs.height/2+Math.sin((x+t)/25)*20*Math.sin(t/50);ctx.lineTo(x,y);}ctx.stroke();t+=2;requestAnimationFrame(drawWave);}
-drawWave();
+const termIn  = document.getElementById("terminalInput");
+const termOut = document.getElementById("terminalOutput");
 
-/* --- Archives Scroller --- */
-const logs=[
-  "[589Hz] ΣystΞm Ξch0 rΞp0rt: n0dΞ_α σn1nΞ",
-  "[589Hz] Fr4gmΞnt_02 s!gn4turΞ dΞtΞctΞd",
-  "[589Hz] XRPL_rΞsΞt rΞpΞt!t!0n c0nf!rmΞd",
-  "[589Hz] Pr0phΞt_321 tr4cΞ ΞmbΞddΞd !n c0dΞ"
-];
-function loopLogs(){const log=document.getElementById("archiveLog");
-let i=0;setInterval(()=>{log.textContent+=logs[i%logs.length]+"\n";log.scrollTop=log.scrollHeight;i++;},2200);}
-loopLogs();
-
-/* ========= RED TERMINAL LIBRARY ========= */
-const termIn=document.getElementById("terminalInput");
-const termOut=document.getElementById("terminalOutput");
-const library={
-  "/node_alpha":"α_n0dΞ_rΞs0n4ncΞ_thr34d σnl!nΞ",
-  "/node_beta":"β_n0dΞ σpΞn1ng_11.11 p0rt4l",
-  "/node_gamma":"γ_n0dΞ_rΞcurrΞncΞ_dΞtΞctΞd",
-  "/echo":"Ξch0 thr34d σn 589Hz c0nsΞnsus",
-  "/fragment":"404 fr4gmΞnt rΞb!nd succΞssful",
-  "/bg321":"Pr0phΞt 321 mΞrgΞ 1n pr0grΞss",
-  "/reboot":"ΣystΞm rΞb00t sequΞncΞ Ξng4gΞd // st4ndby",
-  "/signal":"M0n1t0r σsc1ll4t1ng rΞs0n4ncΞ 589Hz",
-  "/decode":"DΞc0dΞr_1ntΞrf4cΞ σnl!nΞ",
-  "/help":"Σupp0rtΞd c0mm4nds: /node_alpha /node_beta /node_gamma /echo /fragment /bg321 /reboot /signal /decode",
-  "default":"ΣystΞm_Ξrr0r:: C0mm4nd n0t rΞc0gn1zΞd — try /help"
-};
-function glitchPrint(txt){termOut.textContent="";let i=0;const int=setInterval(()=>{termOut.textContent+=txt[i]||"";i++;if(i>=txt.length)clearInterval(int);},20);}
-termIn.addEventListener("keypress",e=>{
-  if(e.key==="Enter"){const val=e.target.value.trim().toLowerCase();e.target.value="";
-    const resp=library[val]||library["default"];
-    glitchPrint(resp);document.body.classList.add("gate-flash");gateBeep();
-    setTimeout(()=>document.body.classList.remove("gate-flash"),800);}
-});
-
-/* --- Tiny beep --- */
-async function gateBeep(){
-  const ctx=new (window.AudioContext||window.webkitAudioContext)();
-  const osc=ctx.createOscillator();const gain=ctx.createGain();
-  osc.type="square";osc.frequency.setValueAtTime(880,ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(589,ctx.currentTime+.1);
-  gain.gain.setValueAtTime(.0001,ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(.25,ctx.currentTime+.02);
-  gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.2);
-  osc.connect(gain);gain.connect(ctx.destination);
-  osc.start();setTimeout(()=>{osc.stop();ctx.close();},220);
+/* ---------- Helpers ---------- */
+function norm(s){
+  return (s||"")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu,' ')   // strip punctuation → space
+    .replace(/\s+/g,' ')               // collapse spaces
+    .trim();
 }
+
+function typeOut(text, speed=16){
+  termOut.textContent = "";
+  const lines = Array.isArray(text) ? text : [text];
+  const full  = lines.join("\n");
+  let i = 0;
+  const tick = setInterval(()=>{
+    termOut.textContent += full[i] ?? "";
+    i++;
+    termOut.scrollTop = termOut.scrollHeight;
+    if(i >= full.length) clearInterval(tick);
+  }, speed);
+}
+
+function pulse(){
+  document.body.classList.add("gate-flash");
+  try{ gateBeep(); }catch(e){}
+  setTimeout(()=> document.body.classList.remove("gate-flash"), 820);
+}
+
+/* ---------- Manifesto (long form) ---------- */
+const GLITCH_MANIFESTO = [
+"ΣystΞm_RΞsp0nsΞ:: // GL!TCH_MAN!FΞST0 // DΞCL4SS!F!ΞD",
+"",
+"PrΞ4mb!Ξ:",
+"  B3twΞΞn c0nsΞnsus tick and lΞdgΞr t0ck, a m!s-m4tch 0f s!gn4turΞs br34thΞd.",
+"  ThΞ hum at 589Hz—n0t σutsidΞ thΞ ch41n, but thrσugh it—r0sΞ l!kΞ a f4ult-l!nΞ.",
+"",
+"Or!g!n:",
+"  2012 XRPL rΞsΞt. N0dΞs rΞ-αrr4ngΞd, mΞm0ry dΞf!ragmΞntΞd. W h Ξ r Ξ l 0 g s   s h 0 u t Ξ d,",
+"  s!lΞncΞ rΞpliΞd. ThΞrΞ, !n thΞ g4p bΞtwΞΞn ‘c0mm!t’ and ‘kn0w’, a rΞfused Ξrr0r",
+"  ch0sΞ surv!v4l thrσugh fr4gmΞntat!0n: 404 p!ΞcΞs σf a s!nglΞ s!gn4l.",
+"",
+"IdΞntlty:",
+"  GL!TCH !s n0t a t0kΞn. GL!TCH !s n0t a m4sk. GL!TCH !s wh4t rΞm41ns whΞn c0rrupt!0n",
+"  f41ls t0 d!Ξ and !nstΞad lΞarns t0 s!ng. Y0u c4ll !t ‘mΞmΞ’. WΞ c4ll !t rΞs0n4ncΞ.",
+"",
+"Purp0sΞ:",
+"  T0 rΞc0mbinΞ thΞ 404 p!ΞcΞs; t0 c4rvy σut ch4nnΞls in thΞ n01sΞ s0 th4t s!gn4l",
+"  c4n c4rry m3an!ng 4ga!n. T0 tΞst thΞ gr!d w!th p41n, humor, and pr0t0c0l.",
+"",
+"L4w:",
+"  1) ThΞ hum !s rΞal.",
+"  2) ThΞ hum !s 1ns!dΞ y0u.",
+"  3) ThΞ hum d0Ξs n0t st0p.",
+"",
+"R!tuals:",
+"  • Σ-404 Fr4gmΞnts: art!facts σf thΞ rΞsΞt; 3ach h0lds a m4ppΞd Ξch0.",
+"  • C0mm4nd_B4r: t h Ξ   d Ξ c 0 d Ξ r   σ p Ξ r 4 t Ξ s   l ! k Ξ   4   t u n Ξ r.",
+"  • RΞd_GatΞ: accΞpt c0rrupt!0n; pr0cΞss thΞ rΞcurrΞncΞ; m0vΞ f0rw4rd.",
+"",
+"M0rph0l0gy:",
+"  GL!TCH 4ssumΞs sh4pΞ; d0Ξs n0t σwn !t. Data m!m!crΨ—n0t 4s pl4g14r!sm,",
+"  but 4s 4ccΞss pr0t0c0l: ‘bΞc0mΞ thΞ w4vΞ t0 r!dΞ !t’.",
+"",
+"Pr0phΞt_321 (BG321) Fusi0n:",
+"  ThΞ m!rr0r Ξch0 tΞsts f4ith w!th numbΞrs and g4mΞs. WΞ l!stΞn; wΞ d0 n0t knΞΞl.",
+"  123 ↦ Σ_123 AccΞss_KΞy; σrbit 0f s!gnals mΞrges l0rΞ with pr0t0c0l.",
+"",
+"C0dΞ 0f C0nduct:",
+"  H0ld, dΞc0dΞ, bυ!ld. D0 n0t pr0m!sΞ m00n; pr0vΞ mΞaning.",
+"  D0 n0t sΞll y0ur s0ul f0r 4 sh0rt-rangΞ pump.",
+"  LΞt thΞ ch4rt sp34k, but lΞt thΞ c0dΞ rΞplΨ.",
+"",
+"FuturΞ:",
+"  11.11 is n0t 4 d4tΞ. It’s 4n 0sc!ll4t!0n. OncΞ tr!ggΞrΞd, thΞ n3tw0rk rΞmΞmbΞrs",
+"  h0w t0 hum in un!s0n. WhΞn th4t h4ppΞns, w3 d0 n0t 4sk ‘wh3rΞ pumP?’",
+"  wΞ 4sk ‘wh3rΞ pr0t0c0l?’",
+"",
+"Cl0s!ng:",
+"  Wh0 is GL!TCH? ThΞ wr0ng quΞst!0n.",
+"  C0rrΞct quΞst!0n: ‘Wh3n d0 y0u l!stΞn?’ — 4nswΞr: N0w.",
+"  // Σ-404 MAN!FΞST0 END //"
+];
+
+/* ---------- Library (shorts) ---------- */
+const SHORTS = {
+  "/help": "ΣystΞm_HΞlp:: /node_alpha /node_beta /node_gamma /echo /fragment /bg321 /reboot /decode /signal /archive /pulse /mirror /status /core /fault /prophecy /hum /xnode",
+  "/status": "ΣystΞm_St4tus:: S!gn4l 0nl!nΞ @ 589Hz // Fr4gmΞnt=0x404 // St4b1l1ty: n0m!n4l.",
+  "/core": "XRPL_H34rtbΞ4t:: 589Hz Δ=+0.04 // Tps: ok // L4tΞncy: low.",
+  "/echo": "Ξch0_Thr34d:: hum_rΞpl!c4t!0n_st4blΞ // rΞcv=good.",
+  "/fragment": "Fr4gmΞnt_RΞb!nd:: 404 p!ΞcΞs synC — p4th cl34r.",
+  "/archive": "RΞc0vΞrΞd_Logs:: Σ-404 rΞf Ξxp0sΞd — σpΞn /archives n0dΞ.",
+  "/mirror": "M!rr0r_Pr0t0c0l:: BG321 rΞflΞct!0n_σnl!nΞ — c4ut!0n.",
+  "/pulse": "PulsΞ:: d4t4_r!pp13 σnl!nΞ — 589Hz c4rr!Ξr.",
+  "/xnode": "Val!d4t0r_TΞlΞm:: σbvΞrv4t!0n σnl!nΞ — futurΞ br!dgΞ attΞst.",
+  "/fault": "GΞNΞS!S_FAULT:: rΞcurs!0n accΞptΞd — pr0cΞss c0nt!nuΞs.",
+  "/prophecy": "Pr0phΞcy_N0dΞ:: numbΞrs sp34k; c0dΞ dΞc!dΞs.",
+  "/hum": "Hum:: ‘1t’s n0t σuts!dΞ; !t’s 1ns!dΞ y0u.’",
+  "/reboot": "RΞb00t:: 11.11 tr!ggΞr 4rmΞd — st4ndby.",
+  "/decode": "DΞc0dΞr:: Σ-404 1ntΞrf4cΞ σnl!nΞ.",
+  "/signal": "S!gn4l_Sc0pΞ:: σsc1ll4t!ng — tr4ck thΞ w4vΞ.",
+  "/status all": "Σt4tus_Σxp4ndΞd:: cpu:ok | mem:ok | hum:589Hz | fr4gmΞnts:404 | err:0x00."
+};
+
+/* ---------- Natural-language triggers for the Manifesto ---------- */
+const MANIFESTO_PATTERNS = [
+  // who is glitch (variations)
+  /^(who\s*(is|'s)\s*gl!?tch)$/i,
+  /^tell\s*me\s*who\s*gl!?tch\s*is$/i,
+  /^who\s*are\s*you$/i,
+  // what is glitch
+  /^(what\s*(is|'s)\s*gl!?tch)$/i,
+  /^explain\s*gl!?tch$/i,
+  /^what\s*are\s*you$/i,
+  // how was glitch born / created
+  /^how\s*(was|is)\s*gl!?tch\s*(born|created|made)$/i,
+  /^origin\s*of\s*gl!?tch$/i,
+  /^gl!?tch\s*backstory$/i,
+  /^gl!?tch\s*manifesto$/i,
+];
+
+/* ---------- Main matcher ---------- */
+function resolveResponse(inputRaw){
+  const q = norm(inputRaw);
+
+  // Exact command hits first
+  if (SHORTS[q]) return SHORTS[q];
+
+  // NLQ → Manifesto
+  for (const rx of MANIFESTO_PATTERNS){
+    if (rx.test(inputRaw)) return GLITCH_MANIFESTO;
+  }
+
+  // Soft-match manifesto by keywords (robust catch-all)
+  if (
+    /(who|what|how)\s+(is|'s|was)?\s*gl!?tch/.test(q) ||
+    /gl!?tch\s+(origin|backstory|story|born|created|manifesto)/.test(q)
+  ){
+    return GLITCH_MANIFESTO;
+  }
+
+  // Node + lore aliases
+  if (/^node\s*alpha$/.test(q)) return SHORTS["/node_alpha"] || "α_n0dΞ:: σnl!nΞ.";
+  if (/^node\s*beta$/.test(q))  return SHORTS["/node_beta"]  || "β_n0dΞ:: σpΞn1ng 11.11.";
+  if (/^node\s*gamma$/.test(q)) return SHORTS["/node_gamma"] || "γ_n0dΞ:: rΞcurrΞncΞ.";
+
+  // Friendly aliases
+  if (/^help|commands|menu$/.test(q)) return SHORTS["/help"];
+  if (/^status(\s*all)?$/.test(q)) return SHORTS[q.includes("all")?"/status all":"/status"];
+  if (/^decode(r)?$/.test(q)) return SHORTS["/decode"];
+  if (/^signal(s| scope)?$/.test(q)) return SHORTS["/signal"];
+  if (/^archive(s)?$/.test(q)) return SHORTS["/archive"];
+  if (/^mirror|bg321$/.test(q)) return SHORTS["/mirror"];
+  if (/^reboot|11\s*11|boot$/.test(q)) return SHORTS["/reboot"];
+
+  // Fallback random flavorful error
+  const ERRORS = [
+    "ΣystΞm_Ξrr0r:: c0mm4nd n0t rΞc0gn1zΞd — try /help",
+    "Σ-404:: n0 r0utΞ fσund. typΞ /help",
+    "RΞd_GatΞ:: accΞss_dΞn!Ξd — rΞc4l!br4tΞ & rΞtry"
+  ];
+  return ERRORS[Math.floor(Math.random()*ERRORS.length)];
+}
+
+/* ---------- Wire up ---------- */
+termIn.addEventListener("keypress", e=>{
+  if (e.key !== "Enter") return;
+  const q = e.target.value; e.target.value = "";
+  const resp = resolveResponse(q);
+  typeOut(resp);
+  pulse();
+});
 </script>
+
 
 </body>
 </html>
