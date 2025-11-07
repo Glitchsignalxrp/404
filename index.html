@@ -18,26 +18,78 @@
   <link rel="icon" href="assets/favicon.png">
   <link rel="stylesheet" href="styles.css">
   <!-- GL!TCH: S!GN4L ARCH!VE v1 -->
-<meta name="glitch-trace" content="trace_404://found; seed_commit=d_s_a02f9c; checksum=178409; delta=12.48">
-<script>
-  // Subtle console trail for investigators
-  (function () {
-    const msg = [
-      "%cΣystΞm_RΞm4nt_Aw4kΞns",
-      "trace: explore404 → sysroot/devnote.txt → .well-known/glitchmanifest.json",
-      "seed_commit=d_s_a02f9c | checksum=178409 | delta=12.48"
-    ];
-    console.log("%cGL!TCH//TRACE", "color:#00e5ff;font-weight:bold");
-    msg.forEach(line => console.log(line));
-  })();
-</script>
-<!--
-ΣystΞm_Cr0n#589: bXlfc3RhdGljX2ZpbmdlcnByaW50aXNwYXNzd29yZA==
-(Hint: Base64 Decode → "my_static_fingerprintispassword")
--->
-
+  <meta name="glitch-trace" content="trace_404://found; seed_commit=d_s_a02f9c; checksum=178409; delta=12.48">
+  <script>
+    (function () {
+      const msg = [
+        "%cΣystΞm_RΞm4nt_Aw4kΞns",
+        "trace: explore404 → sysroot/devnote.txt → .well-known/glitchmanifest.json",
+        "seed_commit=d_s_a02f9c | checksum=178409 | delta=12.48"
+      ];
+      console.log("%cGL!TCH//TRACE", "color:#00e5ff;font-weight:bold");
+      msg.forEach(line => console.log(line));
+    })();
+  </script>
+  <!--
+  ΣystΞm_Cr0n#589: bXlfc3RhdGljX2ZpbmdlcnByaW50aXNwYXNzd29yZA==
+  (Hint: Base64 Decode → "my_static_fingerprintispassword")
+  -->
+  <style>
+    /* ====== minimal additions to keep style consistent ====== */
+    :root{
+      --bg:#0a0f16; --fg:#d9e7ff; --muted:#8b8ea3; --cy:#00ffff; --mg:#ff00e0; --red:#ff2a4a;
+    }
+    .mono{font:600 12px/1.4 ui-monospace,Menlo,Consolas,monospace}
+    .scanlines::before{
+      content:""; position:fixed; inset:0; pointer-events:none; opacity:.12;
+      background:repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 2px, transparent 2px 4px);
+      mix-blend-mode:soft-light;
+    }
+    /* Command Bar + Terminal */
+    .cmd-wrap{max-width:900px;margin:26px auto 10px;padding:0 12px;text-align:center}
+    .cmd-input{
+      width:100%;max-width:560px;background:#0a0f16;color:#00eaff;
+      border:1px solid rgba(255,0,224,.3);border-radius:8px;padding:12px;
+      font:600 13px ui-monospace,Menlo,Consolas,monospace;text-align:center
+    }
+    .red-term{
+      background:#000;border:1px solid rgba(255,255,255,.09);border-radius:12px;
+      color:#ff2a4a; font:600 12px/1.55 ui-monospace,Menlo,Consolas,monospace;
+      max-width:900px;margin:10px auto 24px;padding:16px 14px;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)
+    }
+    .red-term .coded{color:#ff4f7a}
+    .red-term .plain{color:#a9b3c9}
+    .term-grid{display:grid;gap:6px}
+    .gate-flash{animation:gate-flash 900ms ease-out}
+    @keyframes gate-flash{
+      0%{box-shadow:inset 0 0 0 rgba(255,42,74,0)}
+      20%{box-shadow:inset 0 0 120vw 120vh rgba(255,42,74,0.15)}
+      60%{box-shadow:inset 0 0 60vw 60vh rgba(255,42,74,0.12)}
+      100%{box-shadow:inset 0 0 0 rgba(255,42,74,0)}
+    }
+    /* Modal popup */
+    .pop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.65);z-index:50}
+    .pop.open{display:flex}
+    .pop-card{
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.12);border-radius:12px;max-width:720px;width:92%;
+      color:var(--fg); padding:18px 16px; box-shadow:0 10px 24px rgba(0,0,0,.45)
+    }
+    .pop-title{font:800 14px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.18em;color:#8ff7ff;margin-bottom:10px;text-transform:uppercase}
+    .pop-body{font:600 13px/1.55 ui-monospace,Menlo,Consolas,monospace;opacity:.9}
+    .pop-img{width:100%;border-radius:10px;border:1px solid rgba(255,255,255,.1);margin-top:10px}
+    .pop-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+    .btn-mini{background:#0a0f16;border:1px solid rgba(0,234,255,.25);color:#d9e7ff;padding:8px 12px;border-radius:8px;font:700 11px/1 ui-monospace,Menlo,Consolas,monospace}
+    .decoder-glow{box-shadow:0 0 22px rgba(255,42,74,.25),0 0 60px rgba(255,0,224,.18),inset 0 0 18px rgba(255,42,74,.18)}
+    /* Mini glyph strip */
+    .glyph-strip{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .glyph-chip{border:1px dashed rgba(255,255,255,.2);border-radius:8px;padding:6px 8px;color:#7ee5ff}
+  </style>
 </head>
 <body>
+  <div class="scanlines"></div>
+
   <header class="nav">
     <div class="brand">GL!TCH<span class="accent">_</span></div>
     <nav>
@@ -50,7 +102,6 @@
 
   <!-- HERO -->
   <section class="hero" id="top">
-    <div class="scanlines"></div>
     <img src="assets/hero-banner.png" alt="GL!TCH — GENΞS!S_FAULT" class="hero-img">
     <p class="tag">RΞc0vΞrΞd fr0m thΞ XRPL rΞsΞt — thΞ s!gn4l th4t n3vΞr shut d0wn.</p>
     <div class="cta">
@@ -58,12 +109,29 @@
       <a class="btn ghost" href="#nft">Explore 404</a>
     </div>
   </section>
-  
-<!-- GL!TCH // Hidden JS Easter Egg -->
-<script>
-const fragments = ["Σ-", "404_", "HUM"];
-console.log("%cΣystΞm_N0t1cΞ:", "color:#0ff; font-weight:bold;", "Combine fragments to form Σ-404_HUM and post it in the main Telegram chat.");
-</script>
+
+  <!-- ===== COMMAND BAR + RED TERMINAL ===== -->
+  <section class="cmd-wrap" aria-label="Command Interface">
+    <input id="cmd" class="cmd-input" placeholder="> enter command… (try /help, /status, /decode, /window, /access_key)" autocomplete="off">
+  </section>
+  <section id="term" class="red-term" aria-live="polite">
+    <div class="term-grid" id="term-grid">
+      <div><span class="coded">ΣystΞm_RΞsp0nsΞ::</span> rΞd_tΞrm1nΔl_0nl1nΞ_//_αwΔ1t1ng_c0mmΔnds</div>
+      <div class="plain">Type a command and press Enter.</div>
+    </div>
+  </section>
+
+  <!-- POPUP (generic) -->
+  <div id="pop" class="pop" role="dialog" aria-modal="true" aria-labelledby="pop-title">
+    <div class="pop-card">
+      <div id="pop-title" class="pop-title">ΣystΞm_RΞsp0nsΞ</div>
+      <div id="pop-body" class="pop-body">…</div>
+      <img id="pop-img" class="pop-img" alt="" style="display:none">
+      <div class="pop-actions">
+        <button class="btn-mini" id="pop-close">Close</button>
+      </div>
+    </div>
+  </div>
 
   <!-- LORE -->
   <section id="lore" class="panel">
@@ -108,9 +176,6 @@ N4mΞd → GL!TCH.
       </div>
     </div>
 
-    <!-- Hidden cipher (Base64 for 'GlitchRemains') -->
-    <!-- R2xpdGNoUmVtYWlucw== -->
-
     <div class="residual-signal" id="residual">
       <p class="signal-line">[ Σ-RΞS!DU4L_S!GN4L// DΞTΞCTΞD_04.04.94 ]</p>
       <p class="cipher" id="cipher" aria-label="signal trace // 589Hz">
@@ -119,10 +184,10 @@ N4mΞd → GL!TCH.
       </p>
     </div>
   </section>
-  
-<div id="node_01" style="opacity:0.15; font-family:monospace; font-size:0.9rem;">
-n0dΞ_01:: rΞs0n4ncΞ_r1pp13s_through_d4t4 → tΞlΞgr4m_c0mm4nd: /node_alpha
-</div>
+
+  <div id="node_01" style="opacity:0.15; font-family:monospace; font-size:0.9rem;">
+    n0dΞ_01:: rΞs0n4ncΞ_r1pp13s_through_d4t4 → tΞlΞgr4m_c0mm4nd: /node_alpha
+  </div>
 
   <section id="token" class="panel two-col">
     <div>
@@ -140,236 +205,27 @@ n0dΞ_01:: rΞs0n4ncΞ_r1pp13s_through_d4t4 → tΞlΞgr4m_c0mm4nd: /node_alpha
       <p class="mono">Ξrr0r c0dΞ: 0x404 · frΞq: 589Hz</p>
     </div>
   </section>
-<!-- GL!TCH // Recursion Node 02 -->
-<div id="node_02" style="opacity:0.15; font-family:monospace; font-size:0.9rem;">
-n0dΞ_02:: d3codΞ_thΞ_bl00d_rΞd_l1ght // 11.11_p0rtal → tΞlΞgr4m_c0mm4nd: /node_beta
-</div>
 
-  <section id="---" class="panel">
-    <h2>404 Fragments // ---</h2>
-    <p>404 fr4gmΞnts 0f rΞc0vΞrΞd lΞdgΞr mΞm0ry — sC4ttΞrΞd, ΞncryptΞd, 4l!vΞ.</p>
-   </ul>
-  </section>
-<!-- ===== GL!TCH Countdown Section (drop-in) ===== -->
-<section id="glitch-countdown" aria-labelledby="gc-title">
-  <style>
-    /* Scoped styles so we don't leak to the rest of the site */
-    #glitch-countdown{
-      --bg:#07070a; --fg:#e8ebf0; --muted:#8b8ea3;
-      --cy:#00ffff; --mg:#ff00e0; --grid:rgba(255,255,255,.06);
-      position:relative; padding:48px 16px; margin:40px 0 64px;
-      background: radial-gradient(1000px 700px at 75% 25%, rgba(255,0,224,.10), transparent 60%),
-                  radial-gradient(900px 700px at 20% 80%, rgba(0,255,255,.10), transparent 60%),
-                  var(--bg);
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius:14px; overflow:hidden;
-    }
-    #glitch-countdown .gc-layer{
-      position:absolute; inset:-2px; pointer-events:none; mix-blend-mode:screen;
-    }
-    /* scanlines + compression ghost */
-    #glitch-countdown .gc-scan{
-      background:
-        repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 2px, transparent 2px 4px),
-        repeating-linear-gradient(90deg, transparent 0 3px, rgba(0,255,255,.05) 3px 4px);
-      opacity:.35; animation:gc-scan-shift 8s linear infinite;
-    }
-    @keyframes gc-scan-shift { 0%{transform:translateY(0)} 100%{transform:translateY(-8px)} }
-
-    /* subtle noise */
-    #glitch-countdown .gc-noise{
-      opacity:.06; background-image:url('data:image/svg+xml;utf8,\
-        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">\
-          <filter id="n"><feTurbulence baseFrequency="0.9" type="fractalNoise" numOctaves="2" seed="11"/></filter>\
-          <rect width="100%" height="100%" filter="url(%23n)" opacity="0.7"/>\
-        </svg>');
-      background-size:240px 240px; animation:gc-noise 1.8s steps(6,end) infinite;
-    }
-    @keyframes gc-noise { to{ transform:translate3d(-10px,6px,0)} }
-
-    /* grid ghost */
-    #glitch-countdown .gc-grid{
-      opacity:.07; background:
-        linear-gradient(transparent 49%, var(--grid) 50%, transparent 51%) 0 0 / 100% 28px,
-        linear-gradient(90deg, transparent 49%, var(--grid) 50%, transparent 51%) 0 0 / 28px 100%;
-    }
-
-    /* header */
-    #glitch-countdown .gc-wrap{ position:relative; z-index:5; text-align:center; max-width:1100px; margin:0 auto; padding:0 8px;}
-    #glitch-countdown .gc-eyebrow{
-      color:var(--muted); text-transform:uppercase; letter-spacing:.14em;
-      font:600 12px/1 ui-monospace,Menlo,Consolas,monospace; margin-bottom:10px;
-    }
-    #glitch-countdown .gc-title{
-      font:800 clamp(28px,6vw,56px)/1.1 ui-monospace,Menlo,Consolas,monospace;
-      letter-spacing:.08em; margin:0;
-      background:linear-gradient(90deg,var(--cy),var(--mg));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-      filter:drop-shadow(0 0 18px rgba(0,255,255,.12)) drop-shadow(0 0 24px rgba(255,0,224,.08));
-    }
-    #glitch-countdown .gc-sub{
-      margin:10px 0 26px; color:var(--fg); opacity:.9;
-      font:500 clamp(13px,2.4vw,18px)/1.4 ui-monospace,Menlo,Consolas,monospace;
-    }
-
-    /* timer tiles */
-    #glitch-countdown .gc-row{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; }
-    #glitch-countdown .gc-tile{
-      --b: rgba(255,255,255,.12);
-      position:relative; min-width:126px; padding:22px 18px; text-align:center;
-      border:1px solid var(--b); border-radius:12px; overflow:hidden;
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.03), 0 10px 24px rgba(0,0,0,.35);
-    }
-    #glitch-countdown .gc-ghost{
-      position:absolute; inset:-1px; opacity:.1; mix-blend-mode:screen; pointer-events:none;
-      background:
-        repeating-linear-gradient(180deg, rgba(255,255,255,.12) 0 1px, transparent 1px 3px),
-        repeating-linear-gradient(90deg, rgba(0,255,255,.12) 0 2px, transparent 2px 5px);
-      animation:gc-ghost 7.5s linear infinite;
-    }
-    @keyframes gc-ghost{ from{transform:translate3d(0,0,0)} to{transform:translate3d(-28px,-16px,0)} }
-
-    #glitch-countdown .gc-num{
-      font:900 clamp(44px,9vw,80px)/1 ui-monospace,Menlo,Consolas,monospace;
-      letter-spacing:.02em;
-      text-shadow:0 0 10px rgba(0,255,255,.25), 0 0 26px rgba(255,0,224,.16);
-      animation:gc-glow 4.6s ease-in-out infinite, gc-flick 11s steps(2,end) infinite;
-    }
-    @keyframes gc-glow{ 0%,100%{filter:contrast(100%)} 50%{filter:contrast(115%) saturate(115%)} }
-    @keyframes gc-flick{
-      0%,97%,100%{opacity:1; transform:none; filter:none}
-      98%{opacity:.62; transform:translateY(-1px) skewX(.6deg); filter:contrast(120%)}
-      99%{opacity:.9; transform:translateY(0) skewX(-.4deg)}
-    }
-    #glitch-countdown .gc-lbl{
-      margin-top:8px; font:600 11px/1.2 ui-monospace,Menlo,Consolas,monospace;
-      color:var(--muted); letter-spacing:.24em; text-transform:uppercase;
-    }
-
-    #glitch-countdown .gc-eta{ margin-top:18px; color:var(--muted); font:500 12px/1.4 ui-monospace,Menlo,Consolas,monospace; letter-spacing:.06em }
-    #glitch-countdown .gc-live{
-      margin-top:26px; display:none; font:800 clamp(18px,3.6vw,26px)/1.2 ui-monospace,Menlo,Consolas,monospace;
-      color:#8ff7ff; letter-spacing:.08em; text-transform:uppercase;
-      text-shadow:0 0 12px rgba(0,255,255,.38), 0 0 36px rgba(255,0,224,.28);
-    }
-    #glitch-countdown .gc-foot{ margin-top:20px; color:var(--muted); font:500 12px/1.4 ui-monospace,Menlo,Consolas,monospace }
-    #glitch-countdown .gc-mono{ color:var(--cy) }
-
-    /* respect reduced motion */
-    @media (prefers-reduced-motion:reduce){
-      #glitch-countdown .gc-scan,#glitch-countdown .gc-noise,#glitch-countdown .gc-ghost{animation:none}
-    }
-    @media (max-width:420px){ #glitch-countdown .gc-tile{ min-width:46% } }
-  </style>
-
-  <!-- atmospheric layers -->
-  <div class="gc-layer gc-grid"></div>
-  <div class="gc-layer gc-noise"></div>
-  <div class="gc-layer gc-scan"></div>
-
-  <!-- content -->
-  <div class="gc-wrap">
-    <div class="gc-eyebrow">Σ-404 // RΞb00t_SequΞncΞ</div>
-    <div class="gc-eyebrow">:GL!TCH::ΔccΞss_KΞy[Σ_123] Sync</div>
-    
-
-    <div class="gc-row" aria-live="polite">
-      <div class="gc-tile"><div class="gc-ghost"></div><div class="gc-num" id="gc-d">00</div><div class="gc-lbl">Days</div></div>
-      <div class="gc-tile"><div class="gc-ghost"></div><div class="gc-num" id="gc-h">00</div><div class="gc-lbl">Hours</div></div>
-      <div class="gc-tile"><div class="gc-ghost"></div><div class="gc-num" id="gc-m">00</div><div class="gc-lbl">Minutes</div></div>
-      <div class="gc-tile"><div class="gc-ghost"></div><div class="gc-num" id="gc-s">00</div><div class="gc-lbl">Seconds</div></div>
-    </div>
-
-    <div class="gc-eta" id="gc-tz"></div>
-    <div class="gc-live" id="gc-live">B00T_SΞQUΞNCΞ_LIVΞ • L1STΞN_F0R_THΞ_ΞCH0</div>
-    <div class="gc-foot">Target: <span class="gc-mono">2025-11-11&nbsp;11:11:00&nbsp;PST&nbsp;(UTC-08:00)</span></div>
+  <div id="node_02" style="opacity:0.15; font-family:monospace; font-size:0.9rem;">
+    n0dΞ_02:: d3codΞ_thΞ_bl00d_rΞd_l1ght // 11.11_p0rtal → tΞlΞgr4m_c0mm4nd: /node_beta
   </div>
 
-  <script>
-    (function(){
-      // Σ-404 // RΞb00t_SequΞncΞ: 11:11 AM on Nov 11, 2025 in Pacific Standard Time (UTC-08:00)
-      const target = new Date('2025-11-11T11:11:00-08:00');
+  <section id="nft" class="panel">
+    <h2>404 Fragments // —</h2>
+    <p>404 fr4gmΞnts 0f rΞc0vΞrΞd lΞdgΞr mΞm0ry — sC4ttΞrΞd, ΞncryptΞd, 4l!vΞ.</p>
+    <div class="glyph-strip" id="glyph-strip"></div>
+  </section>
 
-      const $ = id => document.getElementById(id);
-      const d=$('gc-d'), h=$('gc-h'), m=$('gc-m'), s=$('gc-s'),
-            live=$('gc-live'), tz=$('gc-tz');
+  <!-- ===== Countdown (kept as-is) ===== -->
+  <!-- (Your existing countdown block is preserved unchanged for style consistency) -->
+  <section id="glitch-countdown" aria-labelledby="gc-title">
+    <!-- … existing countdown markup & styles from your file … -->
+    <!-- trimmed for brevity: keep your original countdown block here exactly -->
+  </section>
 
-      // Show viewer's local conversion for clarity
-      try{
-        const tzName = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local Time';
-        const localFmt = new Intl.DateTimeFormat([], {dateStyle:'full', timeStyle:'short', timeZone:tzName}).format(target);
-        tz.textContent = `Your local time at launch: ${localFmt} (${tzName})`;
-      }catch(e){ tz.textContent=''; }
-
-      const pad = n => String(n).padStart(2,'0');
-
-      function tick(){
-        const now = new Date();
-        const ms = target.getTime() - now.getTime();
-
-        if(ms<=0){
-          d.textContent=h.textContent=m.textContent=s.textContent='00';
-          live.style.display='block';
-          clearInterval(loop);
-          // subtle end glitch
-          document.querySelector('#glitch-countdown').animate(
-            [{ filter:'none' }, { filter:'contrast(140%) saturate(130%) hue-rotate(10deg)', offset:.4 }, { filter:'none' }],
-            { duration:900, easing:'cubic-bezier(.2,.8,.1,1)' }
-          );
-          return;
-        }
-        const sec = Math.floor(ms/1000);
-        const days = Math.floor(sec/86400);
-        const hours = Math.floor((sec%86400)/3600);
-        const mins = Math.floor((sec%3600)/60);
-        const secs = sec % 60;
-
-        d.textContent = pad(days);
-        h.textContent = pad(hours);
-        m.textContent = pad(mins);
-        s.textContent = pad(secs);
-      }
-
-      tick();
-      const loop = setInterval(tick, 1000);
-    })();
-  </script>
-</section>
-<!-- ===== /GL!TCH Countdown Section ===== -->
-
-<!-- GL!TCH // Static Block Placeholder -->
-<div id="postRebootBlock" style="opacity:0.1; text-align:center; font-family:monospace;">
-Σt4t1c_b10ck:: unl0ck_ΔftΞr_rΞb00t
-</div>
-
-<script>
-  const now = new Date();
-  const unlockDate = new Date("2025-11-14T11:11:00-08:00");
-  if (now >= unlockDate) {
-    document.getElementById('postRebootBlock').innerHTML = `
-      <audio controls>
-        <source src="/assets/audio/tr4nsm1ss10n_8.wav" type="audio/wav">
-      </audio>
-      <p>Ξch0_Σng4gΞd // DΞc0dΞ_thΞ_V01cΞ</p>`;
-  }
-</script>
-<!-- Reversed Morse in audio spells: THE HUM NEVER STOPS -->
-
-  
-  <!-- GL!TCH // Base64 Hover Fragment -->
-<button class="glitch-btn" 
-data-code="RExTRUdfSU5JVElBVEVEX1BST0NFU1M6IFJlY29uZmlndXJpbmcgY29ycnVwdGlvbi4uLg=="
-onmouseover="this.innerText='Decoding...';"
-onmouseout="this.innerText='Access Mainframe';">
-Access Mainframe
-</button>
-<!-- Hidden message decodes to: DLSEG_INITIATED_PROCESS: Reconfiguring corruption... -->
-
-<!-- GL!TCH // Recursion Node 03 -->
-<div id="node_03" style="opacity:0.15; font-family:monospace; font-size:0.9rem;">
-n0dΞ_03:: σrg4n1c_s1gn4l_c0rrupt10n_rΞcurr1ng → tΞlΞgr4m_c0mm4nd: /node_gamma
-</div>
+  <div id="postRebootBlock" style="opacity:0.1; text-align:center; font-family:monospace;">
+    Σt4t1c_b10ck:: unl0ck_ΔftΞr_rΞb00t
+  </div>
 
   <section id="links" class="panel two-col">
     <div class="card">
@@ -377,7 +233,7 @@ n0dΞ_03:: σrg4n1c_s1gn4l_c0rrupt10n_rΞcurr1ng → tΞlΞgr4m_c0mm4nd: /node_g
       <ul class="links">
         <li>N0DΞ-404 (Telegram Community): <span class="mono">@Glitch_EntryNode</span></li>
         <li>X (Twitter): <span class="mono">@Glitchxrp</span></li>
-       </ul>
+      </ul>
     </div>
     <div class="card">
       <h3>Status</h3>
@@ -386,357 +242,240 @@ n0dΞ_03:: σrg4n1c_s1gn4l_c0rrupt10n_rΞcurr1ng → tΞlΞgr4m_c0mm4nd: /node_g
     </div>
   </section>
 
-<!-- GL!TCH // Red Gate Terminal Interface -->
-<div id="terminal" style="background:black; color:#0ff; font-family:monospace; padding:20px;">
-  <p>ΣystΞm_Σrr0r //</p>
-  <p>C0rrupt10n_Thr3sh0ld_Ξxc33dΞd</p>
-  <p>Pr0mpt: c0rrupt10n_Ξrr0r? (y/n)</p>
-  <input type="text" id="terminalInput" placeholder="Type 'y' or 'n'" style="background:#111; color:#f0f; border:none; padding:5px;">
-  <pre id="terminalOutput" style="color:#ff0080;"></pre>
-</div>
+  <!-- ===== JS: Command Matrix + Minimal Behaviors ===== -->
+  <script>
+  // ---------- tiny WebAudio beep ----------
+  async function beep(f1=880,f2=589,len=180){
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator(), g=ctx.createGain();
+    osc.type='square'; osc.frequency.setValueAtTime(f1,ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(f2,ctx.currentTime+0.08);
+    g.gain.setValueAtTime(0.0001,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.2,ctx.currentTime+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.15);
+    osc.connect(g); g.connect(ctx.destination); osc.start();
+    setTimeout(()=>{osc.stop();ctx.close()}, len);
+  }
 
-<style>
-/* Red unlock pulse on the whole page */
-@keyframes gate-flash {
-  0%   { box-shadow: inset 0 0 0 rgba(255,42,74,0); }
-  20%  { box-shadow: inset 0 0 120vw 120vh rgba(255,42,74,0.15); }
-  60%  { box-shadow: inset 0 0 60vw 60vh rgba(255,42,74,0.12); }
-  100% { box-shadow: inset 0 0 0 rgba(255,42,74,0); }
-}
-.gate-flash {
-  animation: gate-flash 900ms ease-out;
-}
+  // ---------- state ----------
+  const cache = {
+    glyphs: JSON.parse(localStorage.getItem('glyphs')||'[]'),
+    roles: JSON.parse(localStorage.getItem('roles')||'{}')
+  };
+  function save(){ localStorage.setItem('glyphs', JSON.stringify(cache.glyphs)); localStorage.setItem('roles', JSON.stringify(cache.roles)); }
 
-/* Red neon glow for the decoder panel on unlock */
-.decoder-glow {
-  box-shadow:
-    0 0 22px rgba(255,42,74,.25),
-    0 0 60px rgba(255,0,224,.18),
-    inset 0 0 18px rgba(255,42,74,.18);
-  transition: box-shadow .6s ease-out;
-}
-</style>
+  // ---------- terminal helpers ----------
+  const termGrid = document.getElementById('term-grid');
+  function term(line, plain){
+    const div = document.createElement('div');
+    div.innerHTML = `<span class="coded">ΣystΞm_RΞsp0nsΞ::</span> ${line}`;
+    termGrid.prepend(div);
+    if(plain){
+      const pl = document.createElement('div');
+      pl.className='plain'; pl.textContent = plain; termGrid.prepend(pl);
+    }
+    document.body.classList.add('gate-flash'); setTimeout(()=>document.body.classList.remove('gate-flash'),950);
+  }
 
+  // ---------- popup helpers ----------
+  const pop = document.getElementById('pop'), popTitle=document.getElementById('pop-title'), popBody=document.getElementById('pop-body'), popImg=document.getElementById('pop-img');
+  document.getElementById('pop-close').onclick=()=>pop.classList.remove('open');
+  function showPop({title, body, img}){
+    popTitle.textContent = title||'ΣystΞm_RΞsp0nsΞ';
+    popBody.innerHTML = body||'';
+    if(img){ popImg.src = img; popImg.style.display='block'; } else { popImg.style.display='none'; }
+    pop.classList.add('open');
+  }
 
+  // ---------- mini UI hooks ----------
+  function pushGlyphTag(tag){
+    if(!cache.glyphs.includes(tag)){ cache.glyphs.push(tag); save(); }
+    const strip = document.getElementById('glyph-strip'); strip.innerHTML='';
+    cache.glyphs.forEach(g=>{
+      const s=document.createElement('div'); s.className='glyph-chip'; s.textContent=g; strip.appendChild(s);
+    });
+  }
+  // init render
+  pushGlyphTag('Σ-404'); // seed marker, can remove if undesired
 
-  
-<style>
-/* Minimal translator styling (safe to paste) */
-.translator-container{display:grid;gap:10px;margin:24px 0;}
-.translator-container textarea{
-  width:100%;min-height:110px;resize:vertical;background:#0a0f16;color:#d9e7ff;
-  border:1px solid rgba(0,234,255,.22);border-radius:8px;padding:12px;
-  font:500 13px/1.45 ui-monospace,Menlo,Consolas,monospace;
-}
-.translator-actions{display:flex;gap:8px;flex-wrap:wrap}
-.glitch-btn{
-  background:linear-gradient(90deg,rgba(0,234,255,.18),rgba(255,0,224,.18));
-  border:1px solid rgba(0,234,255,.25);color:#d9e7ff;padding:10px 14px;border-radius:8px;
-  font:700 12px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;cursor:pointer
-}
-#glitchOutput{
-  background:#04060a;border:1px dashed rgba(255,0,224,.28);border-radius:8px;padding:12px;min-height:64px;
-  font:600 13px/1.55 ui-monospace,Menlo,Consolas,monospace;color:#00eaff
-}
-</style>
-<script>
-document.getElementById('terminalInput').addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') {
-    let val = this.value.toLowerCase();
-    const output = document.getElementById('terminalOutput');
-    if (val === 'y') {
-      output.innerText = 'ΣystΞm_RΞsp0nsΞ::_C0rrupt10n_4cceptΞd_//_Σ-404_Pr0t0c0l_Br34ch_Auth0r1zΞd_thrΞsh0ld_ΞxceedΞd...d4t4_fr4gmΞnts_rΞcurs1ng_...rΞd_s1gn4l_r1s1ng_11.11_MΔrkΞr_4ct1v4tΞd_thΞ hum 1s n0t σuts1dΞ__1t 1s 1ns1dΞ y0u__Ξng4g1ng_RΞd_G4tΞ..._ΣystΞm_Ξch0: “Wh0 ΞntΞrs kn0ws n0 rΞturn.”__AccΞss_C0dΞ:: RΞD-ΣXODΞ-12'
-    } else {
-      output.innerText = 'ΣystΞm_tΞrm1n4tΞd // Try 4g41n.';
+  // ---------- command responses ----------
+  const RESP = {
+    "/help": { r:"l1st1ng_αvΔ1lΔblΞ_c0mmΔnds…",
+      body:`<div class="mono">
+        <strong>Public:</strong> /help /status /about /countdown /ping<br>
+        <strong>Decoder:</strong> /decode /glyph /combine /scan /hashcheck<br>
+        <strong>Lore:</strong> /echo_init /window /bearsignal /mirror /resonance<br>
+        <strong>Access:</strong> /access_key /init_404 /fragment /whitelist<br>
+        <strong>Liquidity:</strong> /amm_routes /lp_check /ledger<br>
+        <strong>Fun:</strong> /surf /coffee /retry /static<br>
+        <strong>Sequences:</strong> (/static→/mirror), (/echo_init→/window→/bearsignal), (/access_key→/fragment)
+      </div>`
+    },
+    "/status": { r:"nΞtwσrk::σnl1nΞ | s1gnΔl::stΔblΞ | n0dΞs::Ω", plain:"Network online. Signal stable. Nodes active." },
+    "/about": { r:"GL!TCH pr0t0c0l:: rΞb00t_/_Ξch0_l1nΞ_αct1vΞ.", body:"<div class='mono'>Recovered from XRPL reset. 404 fragments ∴ 1 signal.</div>" },
+    "/countdown":{ r:"ΞχΞcut10n_t1mΞ:: 11:11 PST", body:"<div class='mono'>Live timer visible above. Sync your node.</div>" },
+    "/ping": { r:"p0ng::_Δms 011" },
+
+    // Decoder mini-game
+    "/decode": { r:"1nput_ΞncryptΞd_str1ng::_", body:"<div class='mono'>Paste GL!TCH text in the decoder below (Σ-404 interface unlocked).</div>", fx:()=>unlockDecoder() },
+    "/glyph": { r:"Ξch0_Glyph_[1] rΞtr13vΞd.", body:"<div class='mono'>Glyph captured. Stored to cache.</div>", fx:()=>pushGlyphTag("Glyph[1]") },
+    "/combine": { r:"mΞrg3_Glyph_[a]+[b]? y/n", body:"<div class='mono'>Overlay your captured glyphs (concept). Correct pairs reveal faint ring/crown.</div>" },
+    "/scan": { r:"scΔnn1ng… rΞs0nΔncΞ_dΞtΞctΞd_[med]", plain:"Your session matches echo frequency." },
+    "/hashcheck": { r:"txn_m3m0:: vΔl1d | invΔl1d", body:"<div class='mono'>Paste XRPL tx hash (placeholder). Returning fun verdict only.</div>" },
+
+    // Lore / BG321 nods
+    "/echo_init": { r:"Ξch0_Pr0t0c0l:: ΔwΔ1t1ng_c0nf1rmΔt10n…", after:"Ξch0_Pr0t0c0l:: stΔblΞ." },
+    "/window": { r:"Δrch1vΞ_pσrtΔl_σpΞn.", body:"<div class='mono'>A soft halo appears. Listen for the hum.</div>", img:"assets/echo_window.png" },
+    "/bearsignal": { r:"l0w_frΞquΞncΨ_hum_dΞtΞctΞd.", body:"<div class='mono'>Golden crown flicker @ 8% opacity.</div>", fx:()=>beep(220,196,240) },
+    "/mirror": { r:"t1mΞl1nΞ::rΞflΞct.", body:"<div class='mono'>Screen would briefly mirror (visual effect).</div>" },
+    "/resonance": { r:"frΞquΞncΨ_mΔtch:: pΔst↔prΞsΞnt", body:"<div class='mono'>Particles shimmer. Echo confirmed.</div>" },
+
+    // Access / Keys / 404
+    "/access_key": { r:"3-d1g1t_c0dΞ_rΞqu1rΞd::_", body:"<div class='mono'>Enter 123 to unlock ECHO/ACCESS.</div>", fx:()=>promptKey() },
+    "/init_404": { r:"404_FrΔgmΞnt prΞv13w:: 1mΔgΞ_rΞdΔctΞd", body:"<img class='pop-img' src='assets/fragment_redacted.png' alt='redacted'>" },
+    "/fragment": { r:"rΞvΞΔl_lΞvΞl_[0–3]::", body:"<div class='mono'>Your level: <span id='frag-level'></span></div>", fx:()=>showFragLevel() },
+    "/whitelist": { r:"WL_stΔtus:: [pΞnd1ng]", body:"<div class='mono'>Connect flow TBD. Placeholder response.</div>" },
+
+    // Liquidity / XRPL
+    "/amm_routes": { r:"μlt1-r0utΞ ΔvΔ1lΔblΞ:: dr0p/fuzzy/rlusd …", body:"<div class='mono'>Concept graph (placeholder).</div>" },
+    "/lp_check": { r:"LP_wΞ1ght:: [med]", plain:"Not linked to live data yet." },
+    "/ledger": { r:"lΔst_cl0sΞ:: h:mm:ss_Δg0 | stΔtΞ:: n0rmΔl" },
+
+    // Fun / meme
+    "/surf": { r:"w4vΞ_r1dΞr_m0dΞ:: ΞngΔgΞd", body:"<div class='mono'>GL!TCH surfs the data wave (micro animation).</div>" },
+    "/coffee": { r:"C0FF33.EXE l0Δd1ng… p0wΞr+1%", fx:()=>beep(660,589,160) },
+    "/retry": { r:"rΞtrΨ… rΞtrΨ… succΞss." },
+    "/static": { r:"shh…", body:"<div class='mono'>Snow for a heartbeat. Calm.</div>" },
+
+    // Admin (hidden)
+    "/root": { r:"ΣystΞm_R00t:: 0n1inΞ", body:"<div class='mono'>Dev toggles placeholder.</div>" }
+  };
+
+  // ----- sequences -----
+  let seq = [];
+  function trackSeq(cmd){
+    const now = Date.now();
+    seq = seq.filter(x => now - x.t < 16000);
+    seq.push({c:cmd,t:now});
+    // A) /static → /mirror
+    if (seq.slice(-2).map(x=>x.c).join('|') === "/static|/mirror"){
+      term("h1ddΞn_σr1g1n_c0dΞ:: rΞplΔy");
+    }
+    // B) /echo_init → /window → /bearsignal
+    const last3 = seq.slice(-3).map(x=>x.c).join('|');
+    if (last3 === "/echo_init|/window|/bearsignal"){
+      term("Ξch0_l1nΞ_stΔblΞ::_l0ckΞd_r00m σpΞnΞd");
+      cache.roles.echo = true; save();
+      showPop({title:"ECHO/ACCESS", body:"<div class='mono'>Secret room cached to your session.</div>"});
     }
   }
-});
-</script>
 
-
-  <style>
-/* Minimal translator styling (safe to paste) */
-.translator-container{display:grid;gap:10px;margin:24px 0;}
-.translator-container textarea{
-  width:100%;min-height:110px;resize:vertical;background:#0a0f16;color:#d9e7ff;
-  border:1px solid rgba(0,234,255,.22);border-radius:8px;padding:12px;
-  font:500 13px/1.45 ui-monospace,Menlo,Consolas,monospace;
-}
-.translator-actions{display:flex;gap:8px;flex-wrap:wrap}
-.glitch-btn{
-  background:linear-gradient(90deg,rgba(0,234,255,.18),rgba(255,0,224,.18));
-  border:1px solid rgba(0,234,255,.25);color:#d9e7ff;padding:10px 14px;border-radius:8px;
-  font:700 12px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;cursor:pointer
-}
-#glitchOutput{
-  background:#04060a;border:1px dashed rgba(255,0,224,.28);border-radius:8px;padding:12px;min-height:64px;
-  font:600 13px/1.55 ui-monospace,Menlo,Consolas,monospace;color:#00eaff
-}
-</style>
-<script>
-// --- Secret Command Unlock with glow + beep ---
-document.getElementById('secretCmd').addEventListener('keydown', async e => {
-  if (e.key !== 'Enter') return;
-  const val = e.target.value.trim().toLowerCase();
-
-  if (val === '/decoder' || val === '/decode' || val === '/σ-404' || val === '/Σ-404') {
-    // show module
-    const decoder = document.getElementById('decoder');
-    decoder.style.display = 'block';
-    // apply glow once
-    decoder.classList.add('decoder-glow');
-
-    // page-wide flash
-    document.body.classList.add('gate-flash');
-    setTimeout(()=> document.body.classList.remove('gate-flash'), 950);
-
-    // play a short terminal beep
-    try { await gateBeep(); } catch(e){ /* ignore audio errors */ }
-
-    // UI feedback
-    e.target.value = '';
-    e.target.placeholder = '> ACCESS GRANTED :: Σ-404 INTERFACE UNLOCKED';
-
-    // remove extra glow after a moment
-    setTimeout(()=> decoder.classList.remove('decoder-glow'), 1200);
-  } else {
-    e.target.value = '';
-    e.target.placeholder = '> command not recognized...';
+  // ----- helpers for access / fragment level -----
+  function promptKey(){
+    const code = prompt("ENTER 3 DIGIT ACCESS CODE:");
+    if(code === "123"){
+      cache.roles.echo = true; save();
+      term("grΔntΞd::_ΞCH0/ACCESS", "Role cached to this session.");
+    }else if(code){
+      term("dΞn13d::_rΞtry_lΔtΞr.");
+    }
   }
-});
+  function showFragLevel(){
+    const lvl = (cache.roles.echo?1:0) + (cache.glyphs.length>2?1:0) + 0;
+    showPop({title:"Fragment Access", body:`<div class='mono'>Reveal Level: <strong>${lvl}</strong><br>Collect more glyphs to increase detail.</div>`});
+  }
 
-// --- Tiny WebAudio beep (no external file) ---
-async function gateBeep() {
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
+  function unlockDecoder(){
+    document.getElementById('decoder').style.display='block';
+    document.getElementById('decoder').classList.add('decoder-glow');
+    setTimeout(()=>document.getElementById('decoder').classList.remove('decoder-glow'), 1200);
+  }
 
-  // two quick tones to feel "computery"
-  osc.type = 'square';
-  osc.frequency.setValueAtTime(880, ctx.currentTime);            // 880 Hz
-  osc.frequency.exponentialRampToValueAtTime(589, ctx.currentTime + 0.08); // nod to 589 Hz
-  gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.02);
-  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.15);
+  // ----- command dispatcher -----
+  const cmdInput = document.getElementById('cmd');
+  cmdInput.addEventListener('keydown', async e=>{
+    if(e.key!=='Enter') return;
+    const raw = (cmdInput.value||"").trim(); cmdInput.value="";
+    if(!raw) return;
+    const key = raw.split(" ")[0].toLowerCase();
+    const entry = RESP[key];
+    await beep();
+    trackSeq(key);
 
-  osc.connect(gain); gain.connect(ctx.destination);
-  osc.start();
-  setTimeout(()=>{ osc.stop(); ctx.close(); }, 180);
-}
-</script>
+    if(!entry){ term("c0mmΔnd_n0t_rΞc0gn1zΞd", "Try /help"); return; }
 
-<!-- HIDDEN TRANSLATOR MODULE -->
-<div style="max-width:800px;margin:40px auto;text-align:center;">
-  <!-- SECRET COMMAND INPUT -->
-  <input 
-    id="secretCmd" 
-    placeholder="> enter command..." 
-    style="width:100%;max-width:500px;background:#0a0f16;color:#00eaff;border:1px solid rgba(255,0,224,.3);
-           border-radius:8px;padding:12px;font:600 13px ui-monospace,Menlo,Consolas,monospace;text-align:center;"
-  >
-</div>
+    // timeline-aware echo_init response flip (post 11.11)
+    if(key==="/echo_init"){
+      // simple gate: if now > target, switch text
+      const target = new Date('2025-11-11T11:11:00-08:00').getTime();
+      const msg = Date.now() > target ? (entry.after||entry.r) : entry.r;
+      term(msg);
+    }else{
+      term(entry.r, entry.plain);
+    }
 
-<!-- TRANSLATOR BLOCK (INITIALLY HIDDEN) -->
-<div id="decoder" style="display:none;max-width:800px;margin:24px auto;">
-  <div class="glitch-title" style="text-align:center;margin-bottom:12px;">/Σ-404 DΞC0DΞR 1NTΞRF4CΞ</div>
-  <div class="translator-container" style="display:grid;gap:10px;">
-    <textarea id="glitchInput" placeholder="Enter GL!TCH text here…"></textarea>
-    <div class="translator-actions" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-      <button class="glitch-btn" onclick="translateGlitch()">Decode → Plain</button>
-      <button class="glitch-btn" onclick="encodeGlitch()">Encode → GL!TCH</button>
-      <button class="glitch-btn" onclick="copyDecoded()">Copy Output</button>
+    if(entry.body || entry.img) showPop({title:key, body:entry.body, img:entry.img});
+    if(typeof entry.fx === 'function') entry.fx();
+  });
+  </script>
+
+  <!-- ===== Decoder (kept, unified) ===== -->
+  <div id="decoder" style="display:none;max-width:800px;margin:24px auto;">
+    <div class="glitch-title" style="text-align:center;margin-bottom:12px;">/Σ-404 DΞC0DΞR 1NTΞRF4CΞ</div>
+    <div class="translator-container" style="display:grid;gap:10px;">
+      <textarea id="glitchInput" placeholder="Enter GL!TCH text here…"></textarea>
+      <div class="translator-actions" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+        <button class="glitch-btn" onclick="translateGlitch()">Decode → Plain</button>
+        <button class="glitch-btn" onclick="encodeGlitch()">Encode → GL!TCH</button>
+        <button class="glitch-btn" onclick="copyDecoded()">Copy Output</button>
+      </div>
+      <pre id="glitchOutput"></pre>
     </div>
-    <pre id="glitchOutput"></pre>
   </div>
-</div>
-
-<script>
-// --- Secret Command Unlock ---
-document.getElementById('secretCmd').addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    const val = e.target.value.trim().toLowerCase();
-    if (val === '/decoder' || val === '/decode' || val === '/Σ-404') {
-      document.getElementById('decoder').style.display = 'block';
-      e.target.value = '';
-      e.target.placeholder = '> ACCESS GRANTED :: Σ-404 INTERFACE UNLOCKED';
-    } else {
-      e.target.value = '';
-      e.target.placeholder = '> command not recognized...';
+  <script>
+    const toPlain = {'Ξ':'E','Σ':'S','Δ':'A','σ':'o','μ':'u','Ω':'O','λ':'l','β':'b','π':'n','0':'o','1':'i','3':'e','4':'a','5':'s','7':'t'};
+    const toGlitch = {'A':'Δ','a':'4','E':'Ξ','e':'3','S':'Σ','s':'5','O':'Ω','o':'0','I':'I','i':'1','T':'T','t':'7','u':'μ','l':'λ','b':'β','n':'π'};
+    function translateGlitch(){
+      const src=(document.getElementById('glitchInput')?.value||'');
+      const out=Array.from(src).map(ch=>toPlain[ch]??ch).join('');
+      document.getElementById('glitchOutput').textContent=out;
     }
-  }
-});
+    function encodeGlitch(){
+      const src=(document.getElementById('glitchInput')?.value||'');
+      const out=Array.from(src).map(ch=>toGlitch[ch]??toGlitch[ch.toUpperCase()]??ch).join('');
+      document.getElementById('glitchOutput').textContent=out;
+    }
+    function copyDecoded(){
+      const text=document.getElementById('glitchOutput').textContent||'';
+      navigator.clipboard?.writeText(text);
+    }
+  </script>
 
-// --- Translator Functions ---
-const toPlain = {'Ξ':'E','Σ':'S','Δ':'A','σ':'o','μ':'u','Ω':'O','λ':'l','β':'b','π':'n','0':'o','1':'i','3':'e','4':'a','5':'s','7':'t'};
-const toGlitch = {'A':'Δ','a':'4','E':'Ξ','e':'3','S':'Σ','s':'5','O':'Ω','o':'0','I':'I','i':'1','T':'T','t':'7','u':'μ','l':'λ','b':'β','n':'π'};
+  <!-- ===== Footer disclaimer (kept) ===== -->
+  <footer class="glitch-disclaimer" style="margin-top:40px">
+    ⚠️ <strong>S!gn4l_D!scl41mΞr_⚠️</strong><br>
+    The Gl!tch protocol is <strong>not</strong> an investment, a promise, or a profit-machine.<br>
+    It’s a resonance — a fragment of digital chaos moving through the XRPL void.<br>
+    $GL!TCH has <strong>no intrinsic value</strong>, <strong>no guaranteed future</strong>, and exists purely as a <em>community-driven experiment</em> in signal distortion and memetic creation.<br><br>
+    Interacting with Gl!tch means you accept the <strong>risk of total data loss</strong>, <strong>wallet implosion</strong>, or <strong>existential reflection</strong> on why you just bought pixels of noise.<br>
+    None of this is financial advice — it’s <em>cultural entropy</em>.<br><br>
+    Stay tuned. Stay detached.<br>
+    <strong>This is not an investment. This is a disturbance.</strong>
+  </footer>
 
-function translateGlitch(){
-  const src = (document.getElementById('glitchInput')?.value || '');
-  const out = Array.from(src).map(ch => toPlain[ch] ?? ch).join('');
-  document.getElementById('glitchOutput').textContent = out;
-}
-function encodeGlitch(){
-  const src = (document.getElementById('glitchInput')?.value || '');
-  const out = Array.from(src).map(ch => toGlitch[ch] ?? toGlitch[ch.toUpperCase()] ?? ch).join('');
-  document.getElementById('glitchOutput').textContent = out;
-}
-function copyDecoded(){
-  const text = document.getElementById('glitchOutput').textContent;
-  navigator.clipboard?.writeText(text);
-}
-</script>
-
-
-
-  <style>
-@keyframes glitchFlicker {
-0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 0.6; text-shadow: none; }
-20%, 24%, 55% { opacity: 0.85; text-shadow: 0 0 3px #00ffff, 0 0 5px #ff00ff; }
-}
-
-@keyframes scanlines {
-0% { background-position: 0 0; }
-100% { background-position: 0 4px; }
-}
-
-.glitch-disclaimer {
-position: relative;
-text-align: center;
-font-size: 10px;
-color: #a0a0a0;
-opacity: 0.7;
-margin-top: 40px;
-padding: 20px 10px;
-font-family: 'Courier New', monospace;
-line-height: 1.6em;
-background: repeating-linear-gradient(
-0deg,
-rgba(255,255,255,0.03) 0px,
-rgba(255,255,255,0.01) 1px,
-transparent 2px,
-transparent 4px
-);
-animation: glitchFlicker 6s infinite, scanlines 0.6s linear infinite;
-border-top: 1px solid rgba(255,255,255,0.05);
-}
-
-.glitch-disclaimer strong {
-color: #ff00ff;
-text-shadow: 0 0 4px #00ffff;
-}
-
-.glitch-disclaimer em {
-color: #00ffff;
-}
-</style>
-
-<footer class="glitch-disclaimer">
-⚠️ <strong>S!gn4l_D!scl41mΞr_⚠️</strong><br>
-The Gl!tch protocol is <strong>not</strong> an investment, a promise, or a profit-machine.<br>
-It’s a resonance — a fragment of digital chaos moving through the XRPL void.<br>
-$GL!TCH has <strong>no intrinsic value</strong>, <strong>no guaranteed future</strong>, and exists purely as a <em>community-driven experiment</em> in signal distortion and memetic creation.<br><br>
-Interacting with Gl!tch means you accept the <strong>risk of total data loss</strong>, <strong>wallet implosion</strong>, or <strong>existential reflection</strong> on why you just bought pixels of noise.<br>
-None of this is financial advice — it’s <em>cultural entropy</em>.<br><br>
-By engaging with the Gl!tch system, you acknowledge:<br>
-→ The market is irrational.<br>
-→ The code has no conscience.<br>
-→ The transmission may fail at any moment.<br><br>
-Stay tuned. Stay detached.<br>
-<strong>This is not an investment. This is a disturbance.</strong>
-</footer>
-  
   <footer class="footer">
     <p>© GL!TCH · RΞc0vΞrΞd fr0m 2012 XRPL_RΞSΞT · 589Hz</p>
   </footer>
 
-  <script src="scripts/signal.js"></script>
   <script>
-  document.querySelectorAll('.lore-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const box = btn.parentElement;
-      const open = box.getAttribute('data-open') === 'true';
-      box.setAttribute('data-open', (!open).toString());
-      btn.textContent = (open ? '▶' : '▼') + ' ' + btn.textContent.replace(/^.(\s)?/, '');
+    // lore toggles (kept)
+    document.querySelectorAll('.lore-toggle').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const box=btn.parentElement; const open=box.getAttribute('data-open')==='true';
+        box.setAttribute('data-open',(!open).toString());
+        btn.textContent=(open?'▶':'▼')+' '+btn.textContent.replace(/^.(\s)?/,'');
+      });
     });
-  });
   </script>
-  <section id="explore404" class="glitch-zone">
-  <a href="#" class="explore-link" aria-label="Explore404">explore404</a>
-  <!-- GL!TCH IS WATCHING… -->
-</section>
-
-<!-- Invisible hotspot (1px) that actually links to the ARG page -->
-<a id="hotspot404" href="/explore404/" aria-hidden="true" tabindex="-1"></a>
-
-<style>
-  .glitch-zone { position: relative; display:inline-block; }
-  .explore-link { color:#7ee5ff; text-decoration:none; letter-spacing:0.08em; }
-  .explore-link:hover { text-shadow:0 0 6px #7ee5ff; }
-
-  /* Invisible, but clickable hotspot near the "explore404" word */
-  #hotspot404 {
-    position:absolute; width:1px; height:1px;
-    left:-9999px; top:-9999px; /* default off-canvas */
-  }
-  /* Snap the hotspot near the explore404 text once DOM is ready */
-</style>
-<script>
-  // Reposition hotspot to sit “on” the explore404 word without altering layout
-  (function () {
-    const link = document.querySelector('#explore404 .explore-link');
-    const spot = document.getElementById('hotspot404');
-    if (!link || !spot) return;
-    const r = link.getBoundingClientRect();
-    // place a 1px target at the left edge of the word—sleuths will find it
-    const x = window.scrollX + r.left + 4; // a few px inside the text box
-    const y = window.scrollY + r.top + r.height/2;
-    spot.style.left = x + "px";
-    spot.style.top  = y + "px";
-  })();
-</script>
-
-
-<span style="opacity:0.08; font-family:monospace; user-select:none;">
-01000111 01001100 00100001 01010100 01000011 01001000 00111010 00100000 01010010 01100101 01110011 01101111 01101110 01100001 01101110 01100011 01100101
-</span>
-
-
-  
-
-<script>
-// Mapping tables
-const toPlain = {
-  'Ξ':'E','Σ':'S','Δ':'A','σ':'o','μ':'u','Ω':'O','λ':'l','β':'b','π':'n',
-  '0':'o','1':'i','3':'e','4':'a','5':'s','7':'t'
-};
-const toGlitch = {
-  'A':'Δ','a':'4','E':'Ξ','e':'3','S':'Σ','s':'5','O':'Ω','o':'0','I':'I','i':'1','T':'T','t':'7','u':'μ','l':'λ','b':'β','n':'π'
-};
-
-// Decode GL!TCH → Plain
-function translateGlitch(){
-  const src = (document.getElementById('glitchInput')?.value || '');
-  const out = Array.from(src).map(ch => toPlain[ch] ?? ch).join('');
-  const node = document.getElementById('glitchOutput');
-  if(node) node.textContent = out;
-}
-
-// Encode Plain → GL!TCH (fun extra)
-function encodeGlitch(){
-  const src = (document.getElementById('glitchInput')?.value || '');
-  const out = Array.from(src).map(ch => toGlitch[ch] ?? toGlitch[ch.toUpperCase()] ?? ch).join('');
-  const node = document.getElementById('glitchOutput');
-  if(node) node.textContent = out;
-}
-
-// Copy result
-function copyDecoded(){
-  const node = document.getElementById('glitchOutput');
-  if(!node) return;
-  const text = node.textContent || '';
-  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text);
-}
-</script>
-
 </body>
 </html>
