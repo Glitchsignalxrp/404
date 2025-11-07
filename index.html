@@ -767,6 +767,150 @@ function copyDecoded(){
   if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text);
 }
 </script>
+<!-- === GL!TCH :: Σ-Interface Hub v3.0 === -->
+<style>
+  /* Core visuals */
+  #commandApps {max-width:900px;margin:60px auto 40px;padding:20px;background:#05070c;
+    border:1px solid rgba(255,0,224,.25);border-radius:12px;box-shadow:0 0 18px rgba(255,0,224,.1);}
+  #secretCmd{width:100%;background:#080b12;color:#00eaff;border:1px solid rgba(255,0,224,.3);
+    border-radius:8px;padding:14px;font:600 13px ui-monospace,Menlo,Consolas,monospace;text-align:center;}
+  .appWindow{display:none;background:#04060a;border:1px solid rgba(0,234,255,.25);border-radius:10px;
+    padding:20px;margin-top:20px;position:relative;overflow:hidden;color:#d9e7ff;}
+  .appWindow h3{font:700 13px ui-monospace;text-transform:uppercase;letter-spacing:.12em;
+    color:#ff00e0;margin-bottom:10px;}
+  .scanline::after{content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(0deg,rgba(255,255,255,.04)1px,transparent 3px);
+    animation:scan 5s linear infinite;mix-blend-mode:overlay;pointer-events:none;}
+  @keyframes scan{to{background-position:0 -4px;}}
+  #redTerminal{background:#000;border:1px solid rgba(255,0,224,.25);
+    border-radius:10px;padding:16px;margin:40px auto;color:#0ff;font-family:ui-monospace;
+    max-width:900px;}
+  #terminalOutput{color:#ff00e0;white-space:pre-line;min-height:100px;}
+  .gate-flash{animation:gateflash 900ms ease-out;}
+  @keyframes gateflash{0%{box-shadow:inset 0 0 0 rgba(255,0,0,0);}20%{box-shadow:inset 0 0 120vw 120vh rgba(255,42,74,0.15);}60%{box-shadow:inset 0 0 60vw 60vh rgba(255,0,224,0.12);}100%{box-shadow:inset 0 0 0 rgba(255,0,0,0);}}
+  /* App specific */
+  #signalScope canvas{width:100%;height:160px;background:#010308;}
+  #archives pre{height:180px;overflow:auto;color:#00ffff;font:600 12px/1.5 monospace;}
+  #mirrorPortal{height:180px;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at center,rgba(255,0,224,.15),transparent 70%);
+    color:#ff00e0;font:700 16px monospace;letter-spacing:.12em;text-shadow:0 0 8px #00ffff;}
+</style>
+
+<div id="commandApps">
+  <input id="secretCmd" placeholder="> enter command..." autocomplete="off">
+  <!-- Decoder app (already exists, ensure ID matches) -->
+  <div id="decoder" class="appWindow scanline">
+    <h3>/Σ-404 DΞC0DΞR 1NTΞRF4CΞ</h3>
+    <textarea id="glitchInput" placeholder="Enter GL!TCH text..."></textarea>
+    <div style="margin-top:10px">
+      <button onclick="translateGlitch()" class="glitch-btn">Decode</button>
+      <button onclick="encodeGlitch()" class="glitch-btn">Encode</button>
+      <button onclick="copyDecoded()" class="glitch-btn">Copy</button>
+    </div>
+    <pre id="glitchOutput"></pre>
+  </div>
+
+  <!-- Signal Scope -->
+  <div id="signalScope" class="appWindow scanline">
+    <h3>/SIGNAL_SCOPE</h3>
+    <canvas></canvas>
+    <p>RΞs0n4ncΞ m0n1t0rΞd @ 589 Hz ± 0.04 Δ — Σt4b1l1ty n0m1n4l.</p>
+  </div>
+
+  <!-- Archives -->
+  <div id="archives" class="appWindow scanline">
+    <h3>/RΞC0VΞRΞD_TR4NSM!SS!0NS</h3>
+    <pre id="archiveLog"></pre>
+  </div>
+
+  <!-- Mirror Portal -->
+  <div id="mirrorPortal" class="appWindow scanline">
+    <span>σRGΔN1C_ΞCH0 // BG321 PR0T0C0L L0CKΞD</span>
+  </div>
+</div>
+
+<!-- === Red Terminal Library === -->
+<div id="redTerminal">
+  <p>ΣystΞm_Σrr0r //</p>
+  <p>ThrΞsh0ld ΞxcΞΞdΞd – Awaiting c0mm4nd input</p>
+  <input id="terminalInput" placeholder="type command..." style="width:100%;background:#111;color:#f0f;border:none;padding:6px;">
+  <pre id="terminalOutput"></pre>
+</div>
+
+<script>
+/* ========= Σ-INTERFACE HUB ========= */
+const cmdInput=document.getElementById("secretCmd");
+const apps={
+  "/decoder":document.getElementById("decoder"),
+  "/signal":document.getElementById("signalScope"),
+  "/archives":document.getElementById("archives"),
+  "/bg321":document.getElementById("mirrorPortal")
+};
+function hideAllApps(){Object.values(apps).forEach(a=>a.style.display="none");}
+cmdInput.addEventListener("keydown",async e=>{
+  if(e.key!=="Enter")return;
+  const val=e.target.value.trim().toLowerCase();e.target.value="";
+  hideAllApps();
+  if(val==="/reboot"){document.body.classList.add("gate-flash");gateBeep();setTimeout(()=>document.body.classList.remove("gate-flash"),900);return;}
+  if(apps[val]){apps[val].style.display="block";e.target.placeholder="> "+val+"_σnl!nΞ";gateBeep();}
+  else{e.target.placeholder="> unkn0wn_c0mm4nd";}
+});
+
+/* --- Signal Scope Visualizer --- */
+const cvs=document.querySelector("#signalScope canvas");const ctx=cvs.getContext("2d");
+let t=0;function drawWave(){ctx.clearRect(0,0,cvs.width,cvs.height);
+ctx.strokeStyle="#00ffff";ctx.beginPath();for(let x=0;x<cvs.width;x++){
+let y=cvs.height/2+Math.sin((x+t)/25)*20*Math.sin(t/50);ctx.lineTo(x,y);}ctx.stroke();t+=2;requestAnimationFrame(drawWave);}
+drawWave();
+
+/* --- Archives Scroller --- */
+const logs=[
+  "[589Hz] ΣystΞm Ξch0 rΞp0rt: n0dΞ_α σn1nΞ",
+  "[589Hz] Fr4gmΞnt_02 s!gn4turΞ dΞtΞctΞd",
+  "[589Hz] XRPL_rΞsΞt rΞpΞt!t!0n c0nf!rmΞd",
+  "[589Hz] Pr0phΞt_321 tr4cΞ ΞmbΞddΞd !n c0dΞ"
+];
+function loopLogs(){const log=document.getElementById("archiveLog");
+let i=0;setInterval(()=>{log.textContent+=logs[i%logs.length]+"\n";log.scrollTop=log.scrollHeight;i++;},2200);}
+loopLogs();
+
+/* ========= RED TERMINAL LIBRARY ========= */
+const termIn=document.getElementById("terminalInput");
+const termOut=document.getElementById("terminalOutput");
+const library={
+  "/node_alpha":"α_n0dΞ_rΞs0n4ncΞ_thr34d σnl!nΞ",
+  "/node_beta":"β_n0dΞ σpΞn1ng_11.11 p0rt4l",
+  "/node_gamma":"γ_n0dΞ_rΞcurrΞncΞ_dΞtΞctΞd",
+  "/echo":"Ξch0 thr34d σn 589Hz c0nsΞnsus",
+  "/fragment":"404 fr4gmΞnt rΞb!nd succΞssful",
+  "/bg321":"Pr0phΞt 321 mΞrgΞ 1n pr0grΞss",
+  "/reboot":"ΣystΞm rΞb00t sequΞncΞ Ξng4gΞd // st4ndby",
+  "/signal":"M0n1t0r σsc1ll4t1ng rΞs0n4ncΞ 589Hz",
+  "/decode":"DΞc0dΞr_1ntΞrf4cΞ σnl!nΞ",
+  "/help":"Σupp0rtΞd c0mm4nds: /node_alpha /node_beta /node_gamma /echo /fragment /bg321 /reboot /signal /decode",
+  "default":"ΣystΞm_Ξrr0r:: C0mm4nd n0t rΞc0gn1zΞd — try /help"
+};
+function glitchPrint(txt){termOut.textContent="";let i=0;const int=setInterval(()=>{termOut.textContent+=txt[i]||"";i++;if(i>=txt.length)clearInterval(int);},20);}
+termIn.addEventListener("keypress",e=>{
+  if(e.key==="Enter"){const val=e.target.value.trim().toLowerCase();e.target.value="";
+    const resp=library[val]||library["default"];
+    glitchPrint(resp);document.body.classList.add("gate-flash");gateBeep();
+    setTimeout(()=>document.body.classList.remove("gate-flash"),800);}
+});
+
+/* --- Tiny beep --- */
+async function gateBeep(){
+  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const osc=ctx.createOscillator();const gain=ctx.createGain();
+  osc.type="square";osc.frequency.setValueAtTime(880,ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(589,ctx.currentTime+.1);
+  gain.gain.setValueAtTime(.0001,ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.25,ctx.currentTime+.02);
+  gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.2);
+  osc.connect(gain);gain.connect(ctx.destination);
+  osc.start();setTimeout(()=>{osc.stop();ctx.close();},220);
+}
+</script>
 
 </body>
 </html>
