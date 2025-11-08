@@ -1412,6 +1412,85 @@ if (termIn){
 }
 </script>
 
+<script>
+const CHAT_ENDPOINT = "/api/glitch";          // If your site is NOT on Vercel, use the full URL: "https://YOUR-APP.vercel.app/api/glitch"
+const storeKey = "glitch_session_v1";
+
+function getSession() {
+  try { return JSON.parse(localStorage.getItem(storeKey) || '{"id":null,"mem":[]}' ); }
+  catch { return {id:null, mem:[]}; }
+}
+function saveSession(s){ localStorage.setItem(storeKey, JSON.stringify(s)); }
+
+async function chatWithGlitch(userText){
+  const sess = getSession();
+  const body = { text:userText, session: sess };
+
+  const res = await fetch(CHAT_ENDPOINT, {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) { typeOut("ΣystΞm_Ξrr0r:: link down. try again."); return; }
+
+  const reader = res.body.getReader();
+  const dec = new TextDecoder();
+  termOut.textContent = "";
+  let buffer = "";
+  while (true){
+    const {value, done} = await reader.read();
+    if (done) break;
+    const chunk = dec.decode(value, {stream:true});
+    buffer += chunk;
+    const parts = buffer.split("\n");
+    buffer = parts.pop() || "";
+    for (const line of parts){
+      if (line.startsWith("TOOL:")){
+        const cmd = line.slice(5).trim();  // e.g. "open:/signal"
+        if (cmd.startsWith("open:/")) {
+          const key = cmd.replace("open:/","").trim();
+          const map = {
+            decoder:"decoder", signal:"signalScope", archive:"archives",
+            mirror:"mirrorPortal", xrp:"xrpState", bridge:"bridgeViz",
+            validators:"validatorOps", entropy:"entropyViz"
+          };
+          const id = map[key];
+          if (id) showApp(id);
+        }
+        continue;
+      }
+      if (line.startsWith("MEM:")){
+        try { saveSession(JSON.parse(line.slice(4))); } catch {}
+        continue;
+      }
+      termOut.textContent += line + "\n";
+      termOut.scrollTop = termOut.scrollHeight;
+    }
+  }
+}
+
+// Hook the red terminal input: manual commands first, otherwise send to GL!TCH Brain
+if (termIn){
+  termIn.addEventListener("keypress", async e=>{
+    if (e.key !== "Enter") return;
+    const q = e.target.value; e.target.value = "";
+
+    // manual commands (your existing resolveResponse)
+    const manual = /^\/(decoder|decode|signal|scope|archive|archives|mirror|bg321|xrp|bridge|validators|ops|entropy|router|whitepaper|help|close|exit)\b/i.test((q||"").trim());
+    if (manual){
+      const resp = resolveResponse(q);
+      typeOut(resp);
+      pulse();
+      return;
+    }
+
+    // otherwise send to the LLM
+    pulse();
+    termOut.textContent = "GL!TCH: …";
+    await chatWithGlitch(q);
+  });
+}
+</script>
 
 </body>
 </html>
