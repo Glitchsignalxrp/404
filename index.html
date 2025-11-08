@@ -639,28 +639,94 @@ function copyDecoded(){
 </div>
 
 <script>
-/* ============ GL!TCH Command Apps + Red Gate Terminal (consolidated) ============ */
+/* ============ GL!TCH Command Apps + Red Gate Terminal (pro v5) ============ */
 
 /* ---------- Safe element refs ---------- */
 const secretCmd = document.getElementById("secretCmd");
-const apps = {
-  decoder: document.getElementById("decoder"),
-  signalScope: document.getElementById("signalScope"),
-  archives: document.getElementById("archives"),
-  mirrorPortal: document.getElementById("mirrorPortal"),
-};
 const termIn  = document.getElementById("terminalInput");
 const termOut = document.getElementById("terminalOutput");
 
-/* ---------- Utilities ---------- */
-function hideAllApps(){
-  Object.values(apps).forEach(el => { if (el) el.style.display = "none"; });
+/* ---------- App registry (IDs) ---------- */
+const appIds = [
+  "decoder","signalScope","archives","mirrorPortal",
+  "xrpState","ledgerPulse","bridgeViz","validatorOps",
+  "memesmith","humTest","keyring","fragmentsHub",
+  "ogProbe","entropyViz","routerMap","whitepaperDesk"
+];
+
+/* ---------- Ensure containers exist (creates minimal stubs if missing) ---------- */
+const commandAppsRoot = document.getElementById("commandApps") || document.body;
+const apps = {};
+function ensureApp(id, title, inner = "") {
+  let node = document.getElementById(id);
+  if (!node) {
+    node = document.createElement("div");
+    node.id = id;
+    node.className = "appWindow scanline";
+    node.style.display = "none";
+    node.innerHTML = `<h3>${title}</h3>${inner}`;
+    commandAppsRoot.appendChild(node);
+  }
+  apps[id] = node;
 }
+
+/* Existing (will be found if already in DOM) */
+ensureApp("decoder", "/Σ-404 DΞC0DΞR 1NTΞRF4CΞ",
+  document.getElementById("decoder") ? "" : `
+  <textarea id="glitchInput" placeholder="Enter GL!TCH text..."></textarea>
+  <div style="margin-top:10px">
+    <button onclick="translateGlitch()" class="glitch-btn">Decode</button>
+    <button onclick="encodeGlitch()" class="glitch-btn">Encode</button>
+    <button onclick="copyDecoded()" class="glitch-btn">Copy</button>
+  </div>
+  <pre id="glitchOutput"></pre>`
+);
+ensureApp("signalScope", "/SIGNAL_SCOPE", document.getElementById("signalScope") ? "" : `<canvas></canvas><p>RΞs0n4ncΞ @ 589 Hz ±0.04Δ</p>`);
+ensureApp("archives", "/RΞC0VΞRΞD_TR4NSM!SS!0NS", document.getElementById("archives") ? "" : `<pre id="archiveLog" style="height:220px;overflow:auto;"></pre>`);
+ensureApp("mirrorPortal", "/M!RROR_PORTAL", document.getElementById("mirrorPortal") ? "" : `<span>σRGΔN1C_ΞCH0 // BG321 PR0T0C0L L0CKΞD</span>`);
+
+/* New lore apps (12) */
+ensureApp("xrpState", "/XRPL_ST4TΞ", `<pre id="xrpStateLog" style="height:160px;overflow:auto;"></pre>`);
+ensureApp("ledgerPulse", "/LΞDGΞR_PULSΞ", `<div id="ledgerTick" style="font:700 14px ui-monospace;color:#00ffff"></div><small>Simulated L1 heartbeat; for aesthetics only.</small>`);
+ensureApp("bridgeViz", "/X-BRIDGΞ_VIZ", `<div style="display:grid;gap:8px">
+  <div>XRPL ⇄ EVM lanes (attestations mocked)</div>
+  <div id="bridgeDots" style="height:8px;background:linear-gradient(90deg,#0ff,#f0f);filter:blur(.4px)"></div>
+  <pre id="bridgeLog" style="height:120px;overflow:auto;"></pre>
+</div>`);
+ensureApp("validatorOps", "/VΔL1DΔT0R_OPS", `<pre id="valLog" style="height:180px;overflow:auto;"></pre>`);
+ensureApp("memesmith", "/MΞMΞSM!TH", `<textarea id="memeSeed" placeholder="seed… (e.g. 'reboot / 589')"></textarea>
+<button class="glitch-btn" id="memeForge">Forge Slogan</button>
+<pre id="memeOut"></pre>`);
+ensureApp("humTest", "/589Hz_HUM_TΞST", `<button class="glitch-btn" id="humPlay">Play 589Hz</button>
+<button class="glitch-btn" id="humStop">Stop</button>
+<p style="opacity:.8">Minimal WebAudio tone matching lore frequency.</p>`);
+ensureApp("keyring", "/ACCΞSS_KΞYR!NG", `<input id="keyInput" placeholder="> paste access key…" style="width:100%;padding:10px;background:#0a0f16;color:#00eaff;border:1px solid rgba(255,0,224,.3);border-radius:8px">
+<pre id="keyOut"></pre>`);
+ensureApp("fragmentsHub", "/FR4GMΞNTS_HUB", `<a target="_blank" class="glitch-btn"
+href="https://xrp.cafe/collection/glitch404fragmentrebootsequence">Open 404 Collection</a>
+<pre id="fragTip" style="margin-top:10px;opacity:.8"></pre>`);
+ensureApp("ogProbe", "/OG_PROBΞ", `<input id="ogUrl" placeholder="> paste url to preview OG tags (client-side fetch blocked; mock only)">
+<pre id="ogOut"></pre>`);
+ensureApp("entropyViz", "/ΣNTR0PY_VIZ", `<canvas id="entropyCanvas" style="width:100%;height:160px;background:#010308"></canvas>
+<pre id="entropyOut"></pre>`);
+ensureApp("routerMap", "/C0MM4ND_MAP", `<pre id="routerOut"></pre>`);
+ensureApp("whitepaperDesk", "/WH!TΞPΔPΞR_DECK", `<pre id="wpOut"></pre>`);
+
+/* ---------- Utilities ---------- */
+function hideAllApps(){ Object.values(apps).forEach(el => { if (el) el.style.display = "none"; }); }
 function showApp(id){
   hideAllApps();
   if (apps[id]) {
     apps[id].style.display = "block";
     if (id === "signalScope") startScope();
+    if (id === "archives") startArchiveStream();
+    if (id === "xrpState") startXrpState();
+    if (id === "ledgerPulse") startLedgerPulse();
+    if (id === "bridgeViz") startBridgeViz();
+    if (id === "validatorOps") startValidatorOps();
+    if (id === "entropyViz") startEntropyViz();
+    if (id === "routerMap") renderRouterMap();
+    if (id === "whitepaperDesk") renderWhitepaperDesk();
   }
 }
 
@@ -683,11 +749,7 @@ async function gateBeep(){
 }
 
 /* Red screen flash */
-function pulse(){
-  document.body.classList.add("gate-flash");
-  try { gateBeep(); } catch(e){}
-  setTimeout(()=> document.body.classList.remove("gate-flash"), 820);
-}
+function pulse(){ document.body.classList.add("gate-flash"); try { gateBeep(); } catch(e){} setTimeout(()=> document.body.classList.remove("gate-flash"), 820); }
 
 /* Typewriter for terminal */
 function typeOut(text, speed=16){
@@ -698,74 +760,257 @@ function typeOut(text, speed=16){
   let i = 0;
   const tick = setInterval(()=>{
     termOut.textContent += full[i] ?? "";
-    i++;
-    termOut.scrollTop = termOut.scrollHeight;
+    i++; termOut.scrollTop = termOut.scrollHeight;
     if(i >= full.length) clearInterval(tick);
   }, speed);
 }
 
-/* ---------- Archives payload (sample) ---------- */
-(function seedArchives(){
+/* ---------- Archive: long live-scrolling feed ---------- */
+let archiveTimer = null;
+function startArchiveStream(){
   const log = document.getElementById("archiveLog");
   if (!log) return;
-  log.textContent =
-`[Σ-404//LOG]
-2012-Reset :: consensus_desync_detected → fragmenting...
-Echo::589Hz persists across checkpoints.
-Memo: "It isn't outside you. It is inside you."
 
-2017 :: BG321 mirror appears // numbers sing, code decides.
-2025-11-11 :: Reboot marker armed. Listen for the ECHO.`;
-})();
+  const feed = [
+    "[Σ-404//LOG] boot→ residue check … OK",
+    "2012-Reset :: consensus_desync_detected → fragmenting…",
+    "Echo::589Hz persists across checkpoints.",
+    "Memo: \"It isn't outside you. It is inside you.\"",
+    "2014 :: orphaned hash-map recovered from cold store.",
+    "2015 :: sideband noise observed @ testnet; ignored.",
+    "2017 :: BG321 mirror appears // numbers sing, code decides.",
+    "2018 :: πϕ eyes artifact mapped to 7 nodes.",
+    "2019 :: failed containment: Lock Protocol 589 re-written by noise.",
+    "2020 :: 0x404 tag begins replicating in artist layers.",
+    "2021 :: R4bbit signature noted in 3 validator logs.",
+    "2022 :: {XRP} crest appears during high-load; stabilized.",
+    "2023 :: Σ-123 Access_Key drafted. Do not publish.",
+    "2024 :: entropy > threshold; fragments begin re-binding.",
+    "2025-09 :: pre-reboot hum audible to non-operators.",
+    "2025-10-10 22:10 PST :: genesis ping recorded.",
+    "2025-11-11 11:11 PST :: reboot marker armed. Listen for the ECHO.",
+    "POST :: red gate online; accept corruption; proceed.",
+    "NODE_ALPHA :: /node_alpha responds within 0.589s",
+    "NODE_BETA  :: /node_beta primed for 11.11 handoff",
+    "NODE_GAMMA :: /node_gamma recurs; mirror stable",
+    "XRPL :: smart contracts alphanet observed (experimental)",
+    "BRIDGE :: attestation layer mocked; fees route to treasury (design)",
+    "TREASURY :: signal > memes > signal (closed loop)",
+    "CULTURE :: community-driven entropy harnessed into protocol.",
+    "END OF LINE :: hum continues…"
+  ];
+
+  log.textContent = ""; log.scrollTop = 0;
+  if (archiveTimer) clearInterval(archiveTimer);
+  let i = 0;
+  archiveTimer = setInterval(()=>{
+    log.textContent += (i ? "\n" : "") + feed[i % feed.length];
+    log.scrollTop = log.scrollHeight;
+    i++;
+    if (i >= feed.length) clearInterval(archiveTimer);
+  }, 420);
+}
 
 /* ---------- Signal scope (simple oscilloscope) ---------- */
 let scopeRAF = null;
 function startScope(){
-  const wrap = document.getElementById("signalScope");
-  if (!wrap) return;
-  const cvs = wrap.querySelector("canvas");
-  if (!cvs) return;
+  const wrap = document.getElementById("signalScope"); if (!wrap) return;
+  const cvs = wrap.querySelector("canvas"); if (!cvs) return;
   const ctx = cvs.getContext("2d");
-  // Fit canvas to CSS box once
   const rect = cvs.getBoundingClientRect();
   cvs.width = Math.max(300, Math.floor(rect.width));
   cvs.height = Math.max(120, Math.floor(rect.height || 160));
-
-  let t = 0;
-  cancelAnimationFrame(scopeRAF);
+  let t = 0; cancelAnimationFrame(scopeRAF);
   const draw = () => {
     const {width:w, height:h} = cvs;
-    // bg
-    ctx.fillStyle = "#010308";
-    ctx.fillRect(0,0,w,h);
-    // grid
-    ctx.strokeStyle = "rgba(0,255,255,.12)";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
+    ctx.fillStyle = "#010308"; ctx.fillRect(0,0,w,h);
+    ctx.strokeStyle = "rgba(0,255,255,.12)"; ctx.lineWidth = 1; ctx.beginPath();
     for (let x=0; x<w; x+=28){ ctx.moveTo(x,0); ctx.lineTo(x,h); }
     for (let y=0; y<h; y+=28){ ctx.moveTo(0,y); ctx.lineTo(w,y); }
     ctx.stroke();
-    // waveform
-    ctx.strokeStyle = "rgba(255,0,224,.85)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
+    ctx.strokeStyle = "rgba(255,0,224,.85)"; ctx.lineWidth = 2; ctx.beginPath();
     for (let x=0; x<w; x++){
-      const v = Math.sin((x*0.05) + t) * 0.6
-              + Math.sin((x*0.013) + t*1.8) * 0.25;
+      const v = Math.sin((x*0.05) + t) * 0.6 + Math.sin((x*0.013) + t*1.8) * 0.25;
       const y = h/2 + v * (h*0.35);
       if (x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
     }
-    ctx.stroke();
-    t += 0.08;
-    scopeRAF = requestAnimationFrame(draw);
+    ctx.stroke(); t += 0.08; scopeRAF = requestAnimationFrame(draw);
   };
   draw();
 }
 
-/* ---------- Command Bar Router (#secretCmd) ---------- */
-function normCmd(s){
-  return (s||"").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").replace(/\s+/g," ").trim();
+/* ---------- XRPL State (mock log) ---------- */
+let xrpStateTimer=null;
+function startXrpState(){
+  const el = document.getElementById("xrpStateLog"); if(!el) return;
+  if (xrpStateTimer) clearInterval(xrpStateTimer);
+  const lines = [
+    "XRPL: heartbeat 589Hz // latency: low",
+    "L1 features: AMM ✓ | Hooks (alpha) ~ | NFT ✓",
+    "Contracts (AlphaNet): online — sandbox only",
+    "Mempool drift: nominal; spread < 0.04Δ",
+    "Treasury route: signal → memes → signal",
+    "Reboot index: 11.11 // armed"
+  ];
+  el.textContent=""; let i=0;
+  xrpStateTimer=setInterval(()=>{ el.textContent += (i? "\n":"")+lines[i%lines.length]; i++; if(i>=lines.length) clearInterval(xrpStateTimer); }, 380);
 }
+
+/* ---------- Ledger Pulse (visual tick) ---------- */
+let ledgerPulseTimer=null;
+function startLedgerPulse(){
+  const el = document.getElementById("ledgerTick"); if(!el) return;
+  if (ledgerPulseTimer) clearInterval(ledgerPulseTimer);
+  let n=0; ledgerPulseTimer=setInterval(()=>{ el.textContent = `ledger_closed #${589000+n} • tick`; n++; if(n>42) clearInterval(ledgerPulseTimer); }, 620);
+}
+
+/* ---------- Bridge Viz (mock paths) ---------- */
+let bridgeTimer=null;
+function startBridgeViz(){
+  const log = document.getElementById("bridgeLog"); if(!log) return;
+  if (bridgeTimer) clearInterval(bridgeTimer);
+  const msgs = [
+    "XRPL → EVM : lock() observed • attest() pending",
+    "EVM → XRPL : mint() mirror • fee route: treasury",
+    "Verifier quorum :: 5/7 mock online",
+    "Liquidity lane primed (demo)"
+  ];
+  log.textContent=""; let i=0; bridgeTimer=setInterval(()=>{ log.textContent += (i? "\n":"")+msgs[i%msgs.length]; log.scrollTop=log.scrollHeight; i++; if(i>=msgs.length) clearInterval(bridgeTimer); }, 540);
+}
+
+/* ---------- Validator Ops (mock uptime table) ---------- */
+let valTimer=null;
+function startValidatorOps(){
+  const el = document.getElementById("valLog"); if(!el) return;
+  const rows = [
+    "val-α :: uptime 99.98% :: hum lock ✓",
+    "val-β :: uptime 99.92% :: mirror sync ✓",
+    "val-γ :: uptime 99.87% :: echo drift <0.02",
+    "seed-04 :: archive relay ✓",
+    "seed-07 :: bg321 reflector ✓"
+  ];
+  el.textContent = rows.join("\n");
+}
+
+/* ---------- MemeSmith (client RNG slogans) ---------- */
+(function wireMemeSmith(){
+  const btn = document.getElementById("memeForge");
+  if (!btn) return;
+  btn.addEventListener("click", ()=>{
+    const seed = (document.getElementById("memeSeed")?.value || "reboot").toLowerCase();
+    const riffs = [
+      "Σ-404 HUM > price talk.",
+      "XRPL speed • GL!TCH creed.",
+      "11·11 isn’t a date — it’s a dial.",
+      "Memes → Signals → Protocol.",
+      "Hold the line; tune the hum.",
+      "BG321: mirror the flow; don’t worship the glass."
+    ];
+    const pick = riffs[Math.floor((seed.length * 589) % riffs.length)];
+    document.getElementById("memeOut").textContent = pick;
+  });
+})();
+
+/* ---------- 589Hz Hum Test ---------- */
+(function wireHumTest(){
+  let ctx, osc, gain;
+  const play = document.getElementById("humPlay");
+  const stop = document.getElementById("humStop");
+  if (!play || !stop) return;
+  play.addEventListener("click", async ()=>{
+    const Ctx = window.AudioContext || window.webkitAudioContext; if (!Ctx) return;
+    ctx = new Ctx(); osc = ctx.createOscillator(); gain = ctx.createGain();
+    osc.type = "sine"; osc.frequency.value = 589; gain.gain.value = 0.1;
+    osc.connect(gain); gain.connect(ctx.destination); osc.start();
+  });
+  stop.addEventListener("click", ()=>{ try{osc.stop();ctx.close();}catch(e){} });
+})();
+
+/* ---------- Keyring (offline check for visual pattern only) ---------- */
+(function wireKeyring(){
+  const input = document.getElementById("keyInput"); if(!input) return;
+  const out = document.getElementById("keyOut");
+  input.addEventListener("keydown", e=>{
+    if(e.key!=="Enter") return;
+    const v = input.value.trim(); input.value = "";
+    const looksValid = /^[A-Z0-9\-]{8,}$/.test(v) && /589|404|Σ|XRP/i.test(v);
+    out.textContent = looksValid
+      ? "KΞY_APPR0X_V4L!D :: pattern matches Σ-404 schema (visual check only)."
+      : "KΞY_RΞJΞCTΞD :: pattern mismatch.";
+  });
+})();
+
+/* ---------- Fragments Hub tips ---------- */
+(function(){ const el = document.getElementById("fragTip"); if(el) el.textContent = "Tip: Legendary set = Red Alert bg + {XRP} signature + Rabbit head + 589 mouth."; })();
+
+/* ---------- OG Probe (mock) ---------- */
+(function(){
+  const url = document.getElementById("ogUrl"), out = document.getElementById("ogOut");
+  if (!url || !out) return;
+  url.addEventListener("keydown", e=>{
+    if(e.key!=="Enter") return;
+    out.textContent = "Client-side OG fetch blocked for security. Use server tool.\nExpected tags: og:title, og:description, og:image.";
+  });
+})();
+
+/* ---------- Entropy Viz (PRNG dots) ---------- */
+let entropyRAF=null;
+function startEntropyViz(){
+  const cvs = document.getElementById("entropyCanvas"); if(!cvs) return;
+  const ctx = cvs.getContext("2d");
+  const r = cvs.getBoundingClientRect(); cvs.width = r.width|0; cvs.height = Math.max(140, r.height|0);
+  cancelAnimationFrame(entropyRAF);
+  let t=0; (function draw(){
+    ctx.fillStyle="#010308"; ctx.fillRect(0,0,cvs.width,cvs.height);
+    for(let i=0;i<240;i++){
+      const x = (Math.sin(i*12.9898+t)*43758.5453)%1; // cheap hash
+      const y = (Math.sin(i*78.233+t*1.3)*9631.416)%1;
+      ctx.fillStyle = (i%7===0) ? "rgba(255,0,224,.9)" : "rgba(0,255,255,.8)";
+      ctx.fillRect(((x+1)%1)*cvs.width, ((y+1)%1)*cvs.height, 2, 2);
+    }
+    t+=0.019; entropyRAF=requestAnimationFrame(draw);
+  })();
+}
+
+/* ---------- Router Map (help) ---------- */
+function renderRouterMap(){
+  const out = document.getElementById("routerOut"); if(!out) return;
+  out.textContent =
+`/help
+/decoder | /decode | /Σ-404
+/signal  | /scope
+/archive | /archives
+/mirror  | /bg321
+/xrp     | /xrpstate
+/ledger  | /pulse | /ledgerpulse
+/bridge  | /xbridge
+/validators | /ops
+/memesmith
+/hum | /589
+/key | /access
+/fragments | /404
+/og
+/entropy
+/router
+/whitepaper`;
+}
+
+/* ---------- Whitepaper desk (outline only) ---------- */
+function renderWhitepaperDesk(){
+  const out = document.getElementById("wpOut"); if(!out) return;
+  out.textContent =
+`GL!TCH :: Σ-404 Reboot Sequence
+1. Thesis: Meme → Signal → Protocol loop
+2. Supply + Access Keys + 404 Fragments
+3. Validator telemetry → rewards (concept)
+4. X-Bridge attestation layer (design intent)
+5. Culture flywheel + treasury routes
+6. Roadmap: 11.11 → post-boot fragments`;
+}
+
+/* ---------- Command Bar Router (#secretCmd) ---------- */
+function normCmd(s){ return (s||"").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").replace(/\s+/g," ").trim(); }
+
 if (secretCmd){
   secretCmd.addEventListener("keydown", (e)=>{
     if (e.key !== "Enter") return;
@@ -773,44 +1018,34 @@ if (secretCmd){
     const q = normCmd(raw);
     pulse();
 
-    // Open apps
-    if (["/decoder","/decode","/Σ-404","/σ-404","decoder","decode"].includes(q)) {
-      showApp("decoder");
-      secretCmd.placeholder = "> Σ-404 DECODER :: ACCESS GRANTED";
-      return;
-    }
-    if (["/signal","/scope","/signalscope","signal","scope"].includes(q)) {
-      showApp("signalScope");
-      secretCmd.placeholder = "> SIGNAL_SCOPE :: 589Hz LOCKED";
-      return;
-    }
-    if (["/archive","/archives","archive","archives"].includes(q)) {
-      showApp("archives");
-      secretCmd.placeholder = "> RΞC0VΞRΞD_TR4NSM!SS!0NS :: ONLINE";
-      return;
-    }
-    if (["/mirror","/bg321","mirror","bg321"].includes(q)) {
-      showApp("mirrorPortal");
-      secretCmd.placeholder = "> MIRROR_PORTAL :: ORGANIC_ECHO STABILIZING";
-      return;
-    }
-    if (["/close","close","/exit","exit"].includes(q)) {
-      hideAllApps();
-      secretCmd.placeholder = "> apps closed";
-      return;
-    }
-    if (["/help","help","commands","menu"].includes(q)) {
-      hideAllApps();
-      secretCmd.placeholder = "> /decoder /signal /archive /mirror /close";
-      return;
-    }
+    // Core
+    if (["/decoder","/decode","/σ-404","/Σ-404","decoder","decode"].includes(q)) { showApp("decoder"); secretCmd.placeholder="> Σ-404 DECODER :: ACCESS GRANTED"; return; }
+    if (["/signal","/scope","/signalscope","signal","scope"].includes(q)) { showApp("signalScope"); secretCmd.placeholder="> SIGNAL_SCOPE :: 589Hz LOCKED"; return; }
+    if (["/archive","/archives","archive","archives"].includes(q)) { showApp("archives"); secretCmd.placeholder="> RΞC0VΞRΞD_TR4NSM!SS!0NS :: STREAM"; return; }
+    if (["/mirror","/bg321","mirror","bg321"].includes(q)) { showApp("mirrorPortal"); secretCmd.placeholder="> MIRROR_PORTAL :: ORGANIC_ECHO STABILIZING"; return; }
+
+    // New integrations
+    if (["/xrp","/xrpstate","xrp","xrpstate"].includes(q)) { showApp("xrpState"); secretCmd.placeholder="> XRPL_STATE :: SNAPSHOT"; return; }
+    if (["/ledger","/pulse","/ledgerpulse"].includes(q)) { showApp("ledgerPulse"); secretCmd.placeholder="> LEDGER_PULSE :: TICK"; return; }
+    if (["/bridge","/xbridge"].includes(q)) { showApp("bridgeViz"); secretCmd.placeholder="> X-BRIDGE_VIZ :: LANES"; return; }
+    if (["/validators","/ops","validators","ops"].includes(q)) { showApp("validatorOps"); secretCmd.placeholder="> VALIDATOR_OPS :: UPTIME"; return; }
+    if (["/memesmith","memesmith"].includes(q)) { showApp("memesmith"); secretCmd.placeholder="> MΞMΞSM!TH :: FORGE"; return; }
+    if (["/hum","/589","589","hum"].includes(q)) { showApp("humTest"); secretCmd.placeholder="> 589Hz_HUM :: PLAY/STOP"; return; }
+    if (["/key","/access","key","access"].includes(q)) { showApp("keyring"); secretCmd.placeholder="> ACCΞSS_KΞYR!NG :: CHECK"; return; }
+    if (["/fragments","/404","fragments","404"].includes(q)) { showApp("fragmentsHub"); secretCmd.placeholder="> 404_FRAGMENTS :: OPEN"; return; }
+    if (["/og","og"].includes(q)) { showApp("ogProbe"); secretCmd.placeholder="> OG_PROBΞ :: MOCK"; return; }
+    if (["/entropy","entropy"].includes(q)) { showApp("entropyViz"); secretCmd.placeholder="> ΣNTR0PY_VIZ :: FLOW"; return; }
+    if (["/router","router","/help","help","commands","menu"].includes(q)) { showApp("routerMap"); secretCmd.placeholder="> COMMAND MAP"; return; }
+    if (["/whitepaper","whitepaper"].includes(q)) { showApp("whitepaperDesk"); secretCmd.placeholder="> WHITEPAPER DESK"; return; }
+
+    if (["/close","close","/exit","exit"].includes(q)) { hideAllApps(); secretCmd.placeholder="> apps closed"; return; }
+
     // Unknown
-    hideAllApps();
-    secretCmd.placeholder = "> command not recognized (try /help)";
+    hideAllApps(); secretCmd.placeholder = "> command not recognized (try /router)";
   });
 }
 
-/* ---------- Red Gate Terminal: Library + Manifesto ---------- */
+/* ---------- Red Gate Terminal: Library + Manifesto (unchanged content) ---------- */
 const GLITCH_MANIFESTO = [
 "ΣystΞm_RΞsp0nsΞ:: // GL!TCH_MAN!FΞST0 // DΞCL4SS!F!ΞD",
 "",
@@ -843,14 +1078,15 @@ const GLITCH_MANIFESTO = [
 "  ‘Wh3n d0 y0u l!stΞn?’  →  ‘N0w.’ // END"
 ];
 
+/* Short replies kept (terminal) */
 const SHORTS = {
-  "/help": "ΣystΞm_HΞlp:: /node_alpha /node_beta /node_gamma /echo /fragment /bg321 /reboot /decode /signal /archive /pulse /mirror /status /core /fault /prophecy /hum /status all",
+  "/help": "See /router for full map.",
   "/status": "ΣystΞm_St4tus:: Onl!nΞ@589Hz // fr4gmΞnt=0x404 // st4b1l1ty:n0m!n4l",
   "/status all": "Σt4tus_Σxp4ndΞd:: cpu:ok | mem:ok | hum:589Hz | fr4gmΞnts:404 | err:0x00.",
   "/core": "XRPL_H34rtbΞ4t:: 589Hz Δ=+0.04 // TPS: ok // Latency: low.",
   "/echo": "Ξch0_Thr34d:: hum_rΞpl!c4t!0n_st4blΞ.",
   "/fragment": "Fr4gmΞnt_RΞb!nd:: 404 sync — path clΞar.",
-  "/archive": "RΞc0vΞrΞd_Logs:: /archives n0dΞ σnl!nΞ.",
+  "/archive": "RΞc0vΞrΞd_Logs:: stream via /archive app.",
   "/mirror": "M!rr0r_Pr0t0c0l:: BG321 rΞflΞct!0n σnl!nΞ — c4ut!0n.",
   "/pulse": "PulsΞ:: d4t4_r!pp13 — 589Hz c4rriΞr.",
   "/fault": "GΞNΞS!S_FAULT:: rΞcurs!0n accΞptΞd.",
@@ -862,42 +1098,23 @@ const SHORTS = {
 };
 
 const MANIFESTO_PATTERNS = [
-  /^(who\s*(is|'s)\s*gl!?tch)$/i,
-  /^tell\s*me\s*who\s*gl!?tch\s*is$/i,
-  /^who\s*are\s*you$/i,
-  /^(what\s*(is|'s)\s*gl!?tch)$/i,
-  /^explain\s*gl!?tch$/i,
-  /^what\s*are\s*you$/i,
-  /^how\s*(was|is)\s*gl!?tch\s*(born|created|made)$/i,
-  /^origin\s*of\s*gl!?tch$/i,
+  /^(who\s*(is|'s)\s*gl!?tch)$/i, /^tell\s*me\s*who\s*gl!?tch\s*is$/i, /^who\s*are\s*you$/i,
+  /^(what\s*(is|'s)\s*gl!?tch)$/i, /^explain\s*gl!?tch$/i, /^what\s*are\s*you$/i,
+  /^how\s*(was|is)\s*gl!?tch\s*(born|created|made)$/i, /^origin\s*of\s*gl!?tch$/i,
   /^gl!?tch\s*(backstory|manifesto)$/i
 ];
 
 function resolveResponse(inputRaw){
   const q = (inputRaw||"").toLowerCase().trim();
-
   if (SHORTS[q]) return SHORTS[q];
+  for (const rx of MANIFESTO_PATTERNS){ if (rx.test(inputRaw)) return GLITCH_MANIFESTO; }
+  if (/(who|what|how)\s+(is|'s|was)?\s*gl!?tch/.test(q) || /gl!?tch\s+(origin|backstory|story|born|created|manifesto)/.test(q)) return GLITCH_MANIFESTO;
 
-  for (const rx of MANIFESTO_PATTERNS){
-    if (rx.test(inputRaw)) return GLITCH_MANIFESTO;
-  }
-  if (/(who|what|how)\s+(is|'s|was)?\s*gl!?tch/.test(q) ||
-      /gl!?tch\s+(origin|backstory|story|born|created|manifesto)/.test(q)){
-    return GLITCH_MANIFESTO;
-  }
-
-  // Friendly aliases
-  if (q === "help" || q === "commands" || q === "menu") return SHORTS["/help"];
-  if (q === "status" || q === "status all") return SHORTS[q === "status all" ? "/status all" : "/status"];
-  if (q === "decoder" || q === "decode") return SHORTS["/decode"];
-  if (q === "signal" || q === "signalscope" || q === "scope") return SHORTS["/signal"];
-  if (q === "archive" || q === "archives") return SHORTS["/archive"];
-  if (q === "mirror" || q === "bg321") return SHORTS["/mirror"];
-  if (q === "reboot" || q.includes("11 11")) return SHORTS["/reboot"];
+  if (q === "help" || q === "commands" || q === "menu") return "Use /router for full command map.";
 
   const ERRORS = [
-    "ΣystΞm_Ξrr0r:: command not recognized — try /help",
-    "Σ-404:: n0 r0utΞ fσund. typΞ /help",
+    "ΣystΞm_Ξrr0r:: command not recognized — try /router",
+    "Σ-404:: n0 r0utΞ fσund. typΞ /router",
     "RΞd_GatΞ:: accΞss_dΞn!Ξd — rΞtry"
   ];
   return ERRORS[Math.floor(Math.random()*ERRORS.length)];
@@ -914,6 +1131,7 @@ if (termIn){
   });
 }
 </script>
+
 
 <script>
 /* ============ GL!TCH Command Apps + Red Gate Terminal (fixed) ============ */
