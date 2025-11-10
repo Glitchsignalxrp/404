@@ -12,7 +12,7 @@ TOOL: open:/decoder | open:/signal | open:/archive | open:/mirror | open:/xrp | 
 If user asks to use an app, emit the matching TOOL line once, then continue the reply.
 Keep replies short, punchy, and in-universe.
 `;
-
+npm i -D @types/node
 const HELP_RAG = `
 Core timeline:
 - 2012 reset → Σ-404 fragments persist; 589Hz hum.
